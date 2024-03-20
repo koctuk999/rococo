@@ -80,13 +80,12 @@ public class RococoAuthServiceConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       LoginUrlAuthenticationEntryPoint entryPoint) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        //TODO вернуть для докера
-        // if (environment.acceptsProfiles(Profiles.of("local", "staging"))) {
+        if (environment.acceptsProfiles(Profiles.of("local", "staging"))) {
         http.addFilterBefore(new SpecificRequestDumperFilter(
                 new RequestDumperFilter(),
                 "/login", "/oauth2/.*"
         ), DisableEncodeUrlFilter.class);
-        //}
+        }
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
         http.exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(entryPoint))
@@ -96,7 +95,7 @@ public class RococoAuthServiceConfig {
     }
 
     @Bean
-    //@Profile({"local", "docker"}) TODO вернуть для докера
+    @Profile({"local", "docker"})
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPointHttp() {
         return new LoginUrlAuthenticationEntryPoint("/login");
     }

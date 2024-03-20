@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,13 +36,12 @@ public class SecurityConfig {
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     corsCustomizer.corsCustomizer(http);
 
-    //TODO вернуть для докера
-   // if (environment.acceptsProfiles(Profiles.of("local", "staging"))) {
+  if (environment.acceptsProfiles(Profiles.of("local", "staging"))) {
       http.addFilterBefore(new SpecificRequestDumperFilter(
           new RequestDumperFilter(),
           "/login", "/oauth2/.*"
       ), DisableEncodeUrlFilter.class);
-   // }
+    }
 
     return http.authorizeHttpRequests(customizer -> customizer
             .requestMatchers(

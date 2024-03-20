@@ -5,9 +5,6 @@ spring:
   application:
     name: rococo-auth
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/rococo-auth'
-    username: postgres
-    password: secret
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -22,7 +19,6 @@ spring:
     baseline-version: 0
     schemas: public
     locations: classpath:db.migration.rococo-auth
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -34,11 +30,39 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     open-in-view: false
-
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/rococo-auth'
+    username: postgres
+    password: secret
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
+oauth2:
+  client-id: 'client'
+  client-secret: '{noop}secret'
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  kafka:
+    bootstrap-servers: 'kafka:9092'
+  datasource:
+    url: 'jdbc:postgresql://rococo-db:5432/rococo-auth'
+    username: postgres
+    password: secret
+rococo-front:
+  base-uri: 'http://frontend.rococo.dc'
+rococo-auth:
+  base-uri: 'http://auth.rococo.dc:9000'
 oauth2:
   client-id: 'client'
   client-secret: '{noop}secret'
