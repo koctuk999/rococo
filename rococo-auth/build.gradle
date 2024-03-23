@@ -16,6 +16,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.security:spring-security-oauth2-authorization-server:${project.ext.oauth2AuthorizationServerVersion}"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.springframework.kafka:spring-kafka:${project.ext.springKafkaVersion}"
     implementation "org.flywaydb:flyway-core:${project.ext.flywayVersion}"
     annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
     compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"

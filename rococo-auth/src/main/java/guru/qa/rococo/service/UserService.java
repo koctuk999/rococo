@@ -4,10 +4,12 @@ import guru.qa.rococo.data.Authority;
 import guru.qa.rococo.data.AuthorityEntity;
 import guru.qa.rococo.data.UserEntity;
 import guru.qa.rococo.data.repository.UserRepository;
+import guru.qa.rococo.model.KafkaUserJson;
 import jakarta.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +21,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //TODO добавить кафку
-//    private final KafkaTemplate<String, UserJson> kafkaTemplate;
+    private final KafkaTemplate<String, KafkaUserJson> kafkaTemplate;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            KafkaTemplate<String, KafkaUserJson> kafkaTemplate
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-       // this.kafkaTemplate = kafkaTemplate;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Transactional
@@ -39,16 +44,14 @@ public class UserService {
         userEntity.setAccountNonLocked(true);
         userEntity.setUsername(username);
         userEntity.setPassword(passwordEncoder.encode(password));
-
         AuthorityEntity readAuthorityEntity = new AuthorityEntity();
         readAuthorityEntity.setAuthority(Authority.read);
         AuthorityEntity writeAuthorityEntity = new AuthorityEntity();
         writeAuthorityEntity.setAuthority(Authority.write);
-
         userEntity.addAuthorities(readAuthorityEntity, writeAuthorityEntity);
         String savedUser = userRepository.save(userEntity).getUsername();
-//        kafkaTemplate.send("users", new UserJson(savedUser));
-//        LOG.info("### Kafka topic [users] sent message: " + savedUser);
+        kafkaTemplate.send("users", new KafkaUserJson(savedUser));
+        LOG.info("### Kafka topic [users] sent message: " + savedUser);
         return savedUser;
     }
 }

@@ -32,19 +32,16 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.security.web.PortMapperImpl;
-import org.springframework.security.web.PortResolverImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.util.Map;
 import java.util.UUID;
 
 @Configuration
-public class RococoAuthServiceConfig {
+public class AuthServiceConfig {
 
     private final KeyManager keyManager;
     private final String rococoFrontUri;
@@ -57,14 +54,14 @@ public class RococoAuthServiceConfig {
     private final Environment environment;
 
     @Autowired
-    public RococoAuthServiceConfig(KeyManager keyManager,
-                                   @Value("${rococo-front.base-uri}") String rococoFrontUri,
-                                   @Value("${rococo-auth.base-uri}") String rococoAuthUri,
-                                   @Value("${oauth2.client-id}") String clientId,
-                                   @Value("${oauth2.client-secret}") String clientSecret,
-                                   @Value("${server.port}") String serverPort,
-                                   CorsCustomizer corsCustomizer,
-                                   Environment environment) {
+    public AuthServiceConfig(KeyManager keyManager,
+                             @Value("${rococo-front.base-uri}") String rococoFrontUri,
+                             @Value("${rococo-auth.base-uri}") String rococoAuthUri,
+                             @Value("${oauth2.client-id}") String clientId,
+                             @Value("${oauth2.client-secret}") String clientSecret,
+                             @Value("${server.port}") String serverPort,
+                             CorsCustomizer corsCustomizer,
+                             Environment environment) {
         this.keyManager = keyManager;
         this.rococoFrontUri = rococoFrontUri;
         this.rococoAuthUri = rococoAuthUri;

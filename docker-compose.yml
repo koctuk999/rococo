@@ -5,12 +5,12 @@ services:
     container_name: rococo-db
     image: postgres:15.1
     environment:
-      - POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata"
-      - PGUSER=postgres
+      - POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata","rococo-artist","rococo-painting","rococo-museum","rococo-geo"
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data
+      - rococo-data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "postgres" ]
       interval: 3s
@@ -71,8 +71,28 @@ services:
       - rococo-network
     dns_search: .
 
+  userdata.rococo.dc:
+    container_name: userdata.rococo.dc
+    image: koctuk999/rococo-userdata:latest
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: "wget --spider http://localhost:8081/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - rococo-network
+    dns_search: .
+
 volumes:
-  pgdata:
+  rococo-data:
     external: true
 
 networks:
