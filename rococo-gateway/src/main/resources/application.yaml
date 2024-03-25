@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: rococo-gateway
+
+#TODO унести в профили после запуска фронта в docker
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://127.0.0.1:9000'
+
+grpc:
+  client:
+    grpcUserClient:
+      address: 'static://localhost:9091'
+      negotiationType: PLAINTEXT
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://auth.rococo.dc:9000'
+
+grpc:
+  client:
+    grpcUserClient:
+      address: 'static://userdata.rococo.dc:9091'
+      negotiationType: PLAINTEXT

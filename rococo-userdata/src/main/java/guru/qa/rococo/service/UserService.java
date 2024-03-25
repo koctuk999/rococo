@@ -1,5 +1,6 @@
 package guru.qa.rococo.service;
 
+import guru.qa.grpc.rococo.grpc.User;
 import guru.qa.rococo.data.UserEntity;
 import guru.qa.rococo.data.repository.UserRepository;
 import guru.qa.rococo.model.KafkaUserJson;
@@ -23,9 +24,8 @@ public class UserService {
     }
 
     @KafkaListener(topics = "users", groupId = "userdata")
-    public void kafkaListener(@Payload KafkaUserJson user, ConsumerRecord<String, KafkaUserJson> cr) {
+    public void kafkaListener(@Payload KafkaUserJson user) {
         LOG.info("### Kafka topic [users] received message: " + user.username());
-        LOG.info("### Kafka consumer record: " + cr.toString());
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.username());
         userRepository.save(userEntity);
@@ -34,5 +34,12 @@ public class UserService {
                 user.username(),
                 userEntity.getId()
         ));
+    }
+
+    //TODO добавить исключение если не найден
+    public User getUser(String username) {
+        return userRepository
+                .findByUsername(username)
+                .toGrpc();
     }
 }

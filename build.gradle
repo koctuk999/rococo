@@ -21,7 +21,7 @@ subprojects {
         springGrpcVersion = '2.14.0.RELEASE'
         glassfishJaxbVersion = '4.0.1'
         wsdl4jVersion = '1.6.3'
-
+        protobufVersion = '3.19.6'
         dockerImage = System.getProperty("os.arch") == "aarch64" || System.getProperty("os.arch") == "arm64"
                 ? "arm64v8/eclipse-temurin:19-jre"
                 : "eclipse-temurin:19-jre"
