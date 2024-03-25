@@ -10,10 +10,12 @@ docker rm $(docker ps -a -q)
 if [ "$1" = "push" ]; then
   echo "### Build & push images ###"
   bash ./gradlew  :rococo-auth:jib || exit 1
+  bash ./gradlew  :rococo-gateway:jib || exit 1
   bash ./gradlew  :rococo-userdata:jib || exit 1
 else
   echo "### Build local images ###"
   bash ./gradlew :rococo-auth:jibDockerBuild || exit 1
+  bash ./gradlew :rococo-gateway:jibDockerBuild || exit 1
   bash ./gradlew :rococo-userdata:jibDockerBuild || exit 1
 fi
 

@@ -1,6 +1,10 @@
 server:
   port: 9000
 
+#TODO унести в профили
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
+
 spring:
   application:
     name: rococo-auth
@@ -41,8 +45,6 @@ spring:
     url: 'jdbc:postgresql://localhost:5432/rococo-auth'
     username: postgres
     password: secret
-rococo-front:
-  base-uri: 'http://127.0.0.1:3000'
 rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
 oauth2:
@@ -59,8 +61,6 @@ spring:
     url: 'jdbc:postgresql://rococo-db:5432/rococo-auth'
     username: postgres
     password: secret
-rococo-front:
-  base-uri: 'http://frontend.rococo.dc'
 rococo-auth:
   base-uri: 'http://auth.rococo.dc:9000'
 oauth2:

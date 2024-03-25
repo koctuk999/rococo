@@ -1,11 +1,16 @@
 package guru.qa.rococo.data;
 
+import guru.qa.grpc.rococo.grpc.User;
+import io.grpc.netty.shaded.io.netty.util.CharsetUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Getter
 @Setter
@@ -43,5 +48,21 @@ public class UserEntity {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public User toGrpc() {
+        String firstname = this.getFirstname() == null ? "" : this.getFirstname();
+        String lastname = this.getLastname() == null ? "" : this.getLastname();
+        String avatar = this.getAvatar() == null ? ""
+                : new String(this.getAvatar(), UTF_8)
+                .substring(1); //TODO убрать костыль
+        return User
+                .newBuilder()
+                .setId(this.getId().toString())
+                .setUsername(this.getUsername())
+                .setFirstname(firstname)
+                .setLastname(lastname)
+                .setAvatar(avatar)
+                .build();
     }
 }

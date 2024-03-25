@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RococoAuthApplication {
+public class RococoGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(RococoAuthApplication.class);
+        SpringApplication springApplication = new SpringApplication(RococoGatewayApplication.class);
         springApplication.run(args);
     }
 }
