@@ -24,6 +24,12 @@ grpc:
     grpcUserClient:
       address: 'static://localhost:9091'
       negotiationType: PLAINTEXT
+    grpcMuseumClient:
+      address: 'static://localhost:9094'
+      negotiationType: PLAINTEXT
+    grpcCountryClient:
+      address: 'static://localhost:9093'
+      negotiationType: PLAINTEXT
 
 ---
 spring:
@@ -40,4 +46,10 @@ grpc:
   client:
     grpcUserClient:
       address: 'static://userdata.rococo.dc:9091'
+      negotiationType: PLAINTEXT
+    grpcMuseumClient:
+      address: 'static://museum.rococo.dc:9094'
+      negotiationType: PLAINTEXT
+    grpcCountryClient:
+      address: 'static://country.rococo.dc:9093'
       negotiationType: PLAINTEXT

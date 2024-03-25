@@ -1,14 +1,16 @@
 server:
-  port: 8081
+  port: 8083
 
 grpc:
   server:
-    port: 9091
+    port: 9093
 
 spring:
   application:
-    name: rococo-userdata
+    name: rococo-country
   datasource:
+    username: postgres
+    password: secret
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -22,7 +24,8 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     schemas: public
-    locations: classpath:db.migration.rococo-userdata
+    locations: classpath:db.migration.rococo-country
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -39,26 +42,12 @@ spring:
   config:
     activate:
       on-profile: 'local'
-  kafka:
-    bootstrap-servers: 'localhost:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/rococo-userdata'
-    username: postgres
-    password: secret
+    url: 'jdbc:postgresql://localhost:5432/rococo-country'
 ---
 spring:
   config:
     activate:
       on-profile: 'docker'
-  kafka:
-    bootstrap-servers: 'kafka:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://rococo-db:5432/rococo-userdata'
-    username: postgres
-    password: secret
+    url: 'jdbc:postgresql://rococo-db:5432/rococo-country'

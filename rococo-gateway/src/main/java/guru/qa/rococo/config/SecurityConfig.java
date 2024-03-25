@@ -33,6 +33,7 @@ public class SecurityConfig {
                                 antMatcher(GET, "/api/session"),
                                 antMatcher(GET, "/api/artist/**"),
                                 antMatcher(GET, "/api/museum/**"),
+                                antMatcher(GET, "/api/country/**"),
                                 antMatcher(GET, "/api/painting/**")
                         )
                         .permitAll()
