@@ -1,10 +1,8 @@
 package guru.qa.rococo.service;
 
-import guru.qa.grpc.rococo.grpc.User;
 import guru.qa.rococo.data.UserEntity;
 import guru.qa.rococo.data.repository.UserRepository;
 import guru.qa.rococo.model.KafkaUserJson;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +11,13 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+public class ConsumerService {
+    private static final Logger LOG = LoggerFactory.getLogger(ConsumerService.class);
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public ConsumerService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -34,12 +32,5 @@ public class UserService {
                 user.username(),
                 userEntity.getId()
         ));
-    }
-
-    //TODO добавить исключение если не найден
-    public User getUser(String username) {
-        return userRepository
-                .findByUsername(username)
-                .toGrpc();
     }
 }

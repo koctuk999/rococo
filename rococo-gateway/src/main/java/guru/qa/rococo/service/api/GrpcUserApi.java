@@ -24,4 +24,8 @@ public class GrpcUserApi {
         );
     }
 
+    public User updateUser(User user) {
+        return rococoUserServiceBlockingStub.updateUser(user);
+    }
+
 }
