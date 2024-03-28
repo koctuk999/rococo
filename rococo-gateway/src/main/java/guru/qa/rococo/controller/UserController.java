@@ -1,6 +1,7 @@
 package guru.qa.rococo.controller;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import guru.qa.rococo.service.api.GrpcUserApi;
@@ -9,6 +10,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import static guru.qa.rococo.utils.Hellpers.convertGrpcToJson;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -22,12 +24,10 @@ public class UserController {
         this.userApi = userApi;
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public String getUser(@AuthenticationPrincipal Jwt principal) throws InvalidProtocolBufferException {
+    @GetMapping
+    public JsonNode getUser(@AuthenticationPrincipal Jwt principal) throws InvalidProtocolBufferException {
         String username = principal.getClaimAsString("sub");
-        return JsonFormat
-                .printer()
-                .print(userApi.getUser(username));
+        return convertGrpcToJson(userApi.getUser(username));
     }
 
     @PatchMapping

@@ -1,13 +1,13 @@
 server:
-  port: 8081
+  port: 8084
 
 grpc:
   server:
-    port: 9091
+    port: 9094
 
 spring:
   application:
-    name: rococo-userdata
+    name: rococo-museum
   datasource:
     hikari:
       connection-timeout: 20000
@@ -22,7 +22,8 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     schemas: public
-    locations: classpath:db.migration.rococo-userdata
+    locations: classpath:db.migration.rococo-museum
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -39,26 +40,29 @@ spring:
   config:
     activate:
       on-profile: 'local'
-  kafka:
-    bootstrap-servers: 'localhost:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/rococo-userdata'
+    url: 'jdbc:postgresql://localhost:5432/rococo-museum'
     username: postgres
     password: secret
+
+grpc:
+  client:
+    grpcCountryClient:
+      address: 'static://localhost:9093'
+      negotiationType: PLAINTEXT
 ---
 spring:
   config:
     activate:
       on-profile: 'docker'
-  kafka:
-    bootstrap-servers: 'kafka:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   datasource:
-    url: 'jdbc:postgresql://rococo-db:5432/rococo-userdata'
+    url: 'jdbc:postgresql://rococo-db:5432/rococo-museum'
     username: postgres
     password: secret
+
+grpc:
+  client:
+    grpcCountryClient:
+      address: 'static://country.rococo.dc:9093'
+      negotiationType: PLAINTEXT
+
