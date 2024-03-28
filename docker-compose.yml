@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata","rococo-artist","rococo-painting","rococo-museum","rococo-country"
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_PASSWORD=sectxret
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
       - rococo-data:/var/lib/postgresql/data

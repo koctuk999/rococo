@@ -8,6 +8,7 @@ option java_outer_classname = "RococoUserProto";
 
 service RococoUserService{
   rpc GetUser(UserRequest) returns (User){}
+  rpc UpdateUser(User) returns (User){}
 }
 
 message UserRequest{
