@@ -103,6 +103,13 @@ services:
       timeout: 5s
       retries: 10
     restart: always
+    depends_on:
+      country.rococo.dc:
+        condition: service_healthy
+      museum.rococo.dc:
+        condition: service_healthy
+      userdata.rococo.dc:
+        condition: service_healthy
     networks:
       - rococo-network
     dns_search: .
