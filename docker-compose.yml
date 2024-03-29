@@ -110,6 +110,8 @@ services:
         condition: service_healthy
       userdata.rococo.dc:
         condition: service_healthy
+      artist.rococo.dc:
+        condition: service_healthy
     networks:
       - rococo-network
     dns_search: .
@@ -149,6 +151,25 @@ services:
       rococo-db:
         condition: service_healthy
       country.rococo.dc:
+        condition: service_healthy
+    networks:
+      - rococo-network
+    dns_search: .
+
+  artist.rococo.dc:
+    container_name: artist.rococo.dc
+    image: koctuk999/rococo-artist:latest
+    ports:
+      - "8085:8085"
+      - "9095:9095"
+    healthcheck:
+      test: "wget --spider http://localhost:8085/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
         condition: service_healthy
     networks:
       - rococo-network

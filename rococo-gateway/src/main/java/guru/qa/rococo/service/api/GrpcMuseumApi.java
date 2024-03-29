@@ -1,6 +1,7 @@
 package guru.qa.rococo.service.api;
 
 import guru.qa.grpc.rococo.grpc.*;
+import guru.qa.grpc.rococo.grpc.RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +11,9 @@ import javax.annotation.Nullable;
 
 @Service
 public class GrpcMuseumApi {
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcMuseumApi.class);
 
     @GrpcClient("grpcMuseumClient")
-    private RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub rococoMuseumServiceBlockingStub;
+    private RococoMuseumServiceBlockingStub rococoMuseumServiceBlockingStub;
 
     public AllMuseumsResponse getAllMuseum(Integer page, Integer size, @Nullable String title) {
         AllMuseumsRequest request = title == null ? AllMuseumsRequest.newBuilder()

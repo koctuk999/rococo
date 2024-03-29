@@ -46,15 +46,15 @@ public class MuseumService {
         return convertGrpcToJson(grpcMuseumApi.getMuseumById(id));
     }
 
-    public JsonNode addMuseum(JsonNode jsonMuseum) {
-        Museum museum = convertJsonToGrpc(jsonMuseum, Museum.class);
+    public JsonNode addMuseum(JsonNode museumJson) {
+        Museum museum = convertJsonToGrpc(museumJson, Museum.class);
         JsonNode addedMuseum = convertGrpcToJson(grpcMuseumApi.addMuseum(museum));
         return addedMuseum;
     }
 
-    public JsonNode updateMuseum(JsonNode jsonMuseum) {
-        Museum museum = convertJsonToGrpc(jsonMuseum, Museum.class);
-        JsonNode addedMuseum = convertGrpcToJson(grpcMuseumApi.updateMuseum(museum));
-        return addedMuseum;
+    public JsonNode updateMuseum(JsonNode museumJson) {
+        Museum museum = convertJsonToGrpc(museumJson, Museum.class);
+        JsonNode updatedMuseum = convertGrpcToJson(grpcMuseumApi.updateMuseum(museum));
+        return updatedMuseum;
     }
 }

@@ -1,13 +1,13 @@
 server:
-  port: 8084
+  port: 8085
 
 grpc:
   server:
-    port: 9094
+    port: 9095
 
 spring:
   application:
-    name: rococo-museum
+    name: rococo-artist
   datasource:
     username: postgres
     password: secret
@@ -24,7 +24,7 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     schemas: public
-    locations: classpath:db.migration.rococo-museum
+    locations: classpath:db.migration.rococo-artist
 
   jpa:
     hibernate:
@@ -43,24 +43,11 @@ spring:
     activate:
       on-profile: 'local'
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/rococo-museum'
-
-grpc:
-  client:
-    grpcCountryClient:
-      address: 'static://localhost:9093'
-      negotiationType: PLAINTEXT
+    url: 'jdbc:postgresql://localhost:5432/rococo-artist'
 ---
 spring:
   config:
     activate:
       on-profile: 'docker'
   datasource:
-    url: 'jdbc:postgresql://rococo-db:5432/rococo-museum'
-
-grpc:
-  client:
-    grpcCountryClient:
-      address: 'static://country.rococo.dc:9093'
-      negotiationType: PLAINTEXT
-
+    url: 'jdbc:postgresql://rococo-db:5432/rococo-artist'

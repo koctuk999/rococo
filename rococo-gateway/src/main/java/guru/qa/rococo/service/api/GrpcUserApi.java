@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GrpcUserApi {
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcUserApi.class);
-
     @GrpcClient("grpcUserClient")
     private RococoUserServiceBlockingStub rococoUserServiceBlockingStub;
 
