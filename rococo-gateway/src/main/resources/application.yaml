@@ -30,6 +30,9 @@ grpc:
     grpcCountryClient:
       address: 'static://localhost:9093'
       negotiationType: PLAINTEXT
+    grpcArtistClient:
+      address: 'static://localhost:9095'
+      negotiationType: PLAINTEXT
 
 ---
 spring:
@@ -52,4 +55,7 @@ grpc:
       negotiationType: PLAINTEXT
     grpcCountryClient:
       address: 'static://country.rococo.dc:9093'
+      negotiationType: PLAINTEXT
+    grpcArtistClient:
+      address: 'static://artist.rococo.dc:9095'
       negotiationType: PLAINTEXT

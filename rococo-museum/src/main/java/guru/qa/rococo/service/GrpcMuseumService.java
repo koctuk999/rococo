@@ -121,6 +121,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
 
     private MuseumEntity toMuseumEntity(Museum museum) {
         return new MuseumEntityBuilder()
+                .setId(museum.getId().isEmpty() ? null : UUID.fromString(museum.getId()))
                 .setTitle(museum.getTitle())
                 .setDescription(museum.getDescription())
                 .setPhoto(museum.getPhoto().getBytes())
