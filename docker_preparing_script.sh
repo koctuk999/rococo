@@ -7,7 +7,7 @@ echo "### Stop and remove  containers ###"
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 
-services=("rococo-auth" "rococo-gateway" "rococo-userdata" "rococo-country" "rococo-museum" "rococo-artist")
+services=("rococo-auth" "rococo-gateway" "rococo-userdata" "rococo-country" "rococo-museum" "rococo-artist" "rococo-painting")
 
 for service in "${services[@]}"; do
   echo "### remove local image for $service###"

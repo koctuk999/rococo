@@ -5,9 +5,15 @@ spring:
   application:
     name: rococo-gateway
 
+grpc:
+  client:
+    GLOBAL:
+      max-inbound-message-size: 14194304
+
 #TODO унести в профили после запуска фронта в docker
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
+
 ---
 spring:
   config:
@@ -33,7 +39,9 @@ grpc:
     grpcArtistClient:
       address: 'static://localhost:9095'
       negotiationType: PLAINTEXT
-
+    grpcPaintingClient:
+      address: 'static://localhost:9096'
+      negotiationType: PLAINTEXT
 ---
 spring:
   config:
@@ -58,4 +66,7 @@ grpc:
       negotiationType: PLAINTEXT
     grpcArtistClient:
       address: 'static://artist.rococo.dc:9095'
+      negotiationType: PLAINTEXT
+    grpcPaintingClient:
+      address: 'static://painting.rococo.dc:9096'
       negotiationType: PLAINTEXT
