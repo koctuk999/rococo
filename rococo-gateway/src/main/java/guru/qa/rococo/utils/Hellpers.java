@@ -3,10 +3,7 @@ package guru.qa.rococo.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Message;
-import com.google.protobuf.MessageLite;
-import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.util.JsonFormat;
-import guru.qa.grpc.rococo.grpc.Museum;
 import lombok.SneakyThrows;
 
 public class Hellpers {

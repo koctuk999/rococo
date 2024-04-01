@@ -51,71 +51,6 @@ services:
     networks:
       - rococo-network
 
-  auth.rococo.dc:
-    container_name: auth.rococo.dc
-    image: koctuk999/rococo-auth:latest
-    ports:
-      - "9000:9000"
-    healthcheck:
-      test: "wget --spider http://localhost:9000/actuator/health || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: always
-    depends_on:
-      rococo-db:
-        condition: service_healthy
-      kafka:
-        condition: service_started
-    networks:
-      - rococo-network
-    dns_search: .
-
-  userdata.rococo.dc:
-    container_name: userdata.rococo.dc
-    image: koctuk999/rococo-userdata:latest
-    ports:
-      - "8081:8081"
-      - "9091:9091"
-    healthcheck:
-      test: "wget --spider http://localhost:8081/actuator/health || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: always
-    depends_on:
-      rococo-db:
-        condition: service_healthy
-      kafka:
-        condition: service_started
-    networks:
-      - rococo-network
-    dns_search: .
-
-  gateway.rococo.dc:
-    container_name: gateway.rococo.dc
-    image: koctuk999/rococo-gateway:latest
-    ports:
-      - "8080:8080"
-    healthcheck:
-      test: "wget --spider http://localhost:8080/actuator/health || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: always
-    depends_on:
-      country.rococo.dc:
-        condition: service_healthy
-      museum.rococo.dc:
-        condition: service_healthy
-      userdata.rococo.dc:
-        condition: service_healthy
-      artist.rococo.dc:
-        condition: service_healthy
-    networks:
-      - rococo-network
-    dns_search: .
-
   country.rococo.dc:
     container_name: country.rococo.dc
     image: koctuk999/rococo-country:latest
@@ -170,6 +105,96 @@ services:
     restart: always
     depends_on:
       rococo-db:
+        condition: service_healthy
+    networks:
+      - rococo-network
+    dns_search: .
+
+  painting.rococo.dc:
+    container_name: painting.rococo.dc
+    image: koctuk999/rococo-painting:latest
+    ports:
+      - "8086:8086"
+      - "9096:9096"
+    healthcheck:
+      test: "wget --spider http://localhost:8086/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
+        condition: service_healthy
+      museum.rococo.dc:
+        condition: service_healthy
+      artist.rococo.dc:
+        condition: service_healthy
+    networks:
+      - rococo-network
+    dns_search: .
+
+  userdata.rococo.dc:
+    container_name: userdata.rococo.dc
+    image: koctuk999/rococo-userdata:latest
+    ports:
+      - "8081:8081"
+      - "9091:9091"
+    healthcheck:
+      test: "wget --spider http://localhost:8081/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - rococo-network
+    dns_search: .
+
+  auth.rococo.dc:
+    container_name: auth.rococo.dc
+    image: koctuk999/rococo-auth:latest
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: "wget --spider http://localhost:9000/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - rococo-network
+    dns_search: .
+
+  gateway.rococo.dc:
+    container_name: gateway.rococo.dc
+    image: koctuk999/rococo-gateway:latest
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: "wget --spider http://localhost:8080/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      country.rococo.dc:
+        condition: service_healthy
+      museum.rococo.dc:
+        condition: service_healthy
+      userdata.rococo.dc:
+        condition: service_healthy
+      artist.rococo.dc:
+        condition: service_healthy
+      painting.rococo.dc:
         condition: service_healthy
     networks:
       - rococo-network
