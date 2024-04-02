@@ -49,8 +49,6 @@ public class AuthServiceConfig {
     private final String clientId;
     private final String clientSecret;
     private final CorsCustomizer corsCustomizer;
-    private final String serverPort;
-    private final String defaultHttpsPort = "443";
     private final Environment environment;
 
     @Autowired
@@ -59,7 +57,6 @@ public class AuthServiceConfig {
                              @Value("${rococo-auth.base-uri}") String rococoAuthUri,
                              @Value("${oauth2.client-id}") String clientId,
                              @Value("${oauth2.client-secret}") String clientSecret,
-                             @Value("${server.port}") String serverPort,
                              CorsCustomizer corsCustomizer,
                              Environment environment) {
         this.keyManager = keyManager;
@@ -67,7 +64,6 @@ public class AuthServiceConfig {
         this.rococoAuthUri = rococoAuthUri;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.serverPort = serverPort;
         this.corsCustomizer = corsCustomizer;
         this.environment = environment;
     }
@@ -77,14 +73,14 @@ public class AuthServiceConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       LoginUrlAuthenticationEntryPoint entryPoint) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        if (environment.acceptsProfiles(Profiles.of("local", "staging"))) {
+        if (environment.acceptsProfiles(Profiles.of("local"))) {
         http.addFilterBefore(new SpecificRequestDumperFilter(
                 new RequestDumperFilter(),
                 "/login", "/oauth2/.*"
         ), DisableEncodeUrlFilter.class);
         }
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
+                .oidc(Customizer.withDefaults());
         http.exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(entryPoint))
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()));
         corsCustomizer.corsCustomizer(http);
@@ -92,7 +88,6 @@ public class AuthServiceConfig {
     }
 
     @Bean
-    @Profile({"local", "docker"})
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPointHttp() {
         return new LoginUrlAuthenticationEntryPoint("/login");
     }

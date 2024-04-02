@@ -9,6 +9,9 @@ docker rm $(docker ps -a -q)
 
 services=("rococo-auth" "rococo-gateway" "rococo-userdata" "rococo-country" "rococo-museum" "rococo-artist" "rococo-painting")
 
+echo "### Build frontend ###"
+sh ./client_docker_build.sh || exit 1
+
 for service in "${services[@]}"; do
   echo "### remove local image for $service###"
   docker rmi "koctuk999/$service"
