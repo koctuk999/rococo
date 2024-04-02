@@ -8,7 +8,6 @@ docker run --name rococo-db -p 5432:5432 \
 -e POSTGRES_PASSWORD=secret \
 -e POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata","rococo-artist","rococo-painting","rococo-museum","rococo-country" \
 -v rococo-data:/var/lib/postgresql/data \
--v ./postgres:/docker-entrypoint-initdb.d \
 -d postgres:15.1
 
 docker run --name=zookeeper -e ZOOKEEPER_CLIENT_PORT=2181 -e ZOOKEEPER_TICK_TIME=2000 -p 2181:2181 -d confluentinc/cp-zookeeper:7.3.2

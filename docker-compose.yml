@@ -7,10 +7,9 @@ services:
     environment:
       - POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata","rococo-artist","rococo-painting","rococo-museum","rococo-country"
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=sectxret
+      - POSTGRES_PASSWORD=secret
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
-      - rococo-data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "postgres" ]
       interval: 3s
@@ -195,6 +194,19 @@ services:
       artist.rococo.dc:
         condition: service_healthy
       painting.rococo.dc:
+        condition: service_healthy
+    networks:
+      - rococo-network
+    dns_search: .
+
+  client.rococo.dc:
+    container_name: client.rococo.dc
+    image: koctuk999/rococo-client:latest
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      gateway.rococo.dc:
         condition: service_healthy
     networks:
       - rococo-network

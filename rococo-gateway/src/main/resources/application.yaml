@@ -10,10 +10,6 @@ grpc:
     GLOBAL:
       max-inbound-message-size: 14194304
 
-#TODO унести в профили после запуска фронта в docker
-rococo-front:
-  base-uri: 'http://127.0.0.1:3000'
-
 ---
 spring:
   config:
@@ -24,6 +20,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: 'http://127.0.0.1:9000'
+
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
 
 grpc:
   client:
@@ -52,6 +51,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: 'http://auth.rococo.dc:9000'
+
+rococo-front:
+  base-uri: 'http://client.rococo.dc'
 
 grpc:
   client:

@@ -1,10 +1,6 @@
 server:
   port: 9000
 
-#TODO унести в профили
-rococo-front:
-  base-uri: 'http://127.0.0.1:3000'
-
 spring:
   application:
     name: rococo-auth
@@ -14,7 +10,7 @@ spring:
       minimum-idle: 10
       maximum-pool-size: 30
       idle-timeout: 10000
-      max-lifetime: 1000
+      max-lifetime: 1800000
       auto-commit: true
 
   flyway:
@@ -47,6 +43,8 @@ spring:
     password: secret
 rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
 oauth2:
   client-id: 'client'
   client-secret: '{noop}secret'
@@ -63,6 +61,8 @@ spring:
     password: secret
 rococo-auth:
   base-uri: 'http://auth.rococo.dc:9000'
+rococo-front:
+  base-uri: 'http://client.rococo.dc'
 oauth2:
   client-id: 'client'
   client-secret: '{noop}secret'
