@@ -5,6 +5,9 @@ grpc:
   server:
     port: 9095
 
+topic:
+  name: 'updated'
+
 spring:
   application:
     name: rococo-artist
@@ -42,6 +45,8 @@ spring:
   config:
     activate:
       on-profile: 'local'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rococo-artist'
 ---
@@ -49,5 +54,7 @@ spring:
   config:
     activate:
       on-profile: 'docker'
+  kafka:
+    bootstrap-servers: 'kafka:9092'
   datasource:
     url: 'jdbc:postgresql://rococo-db:5432/rococo-artist'

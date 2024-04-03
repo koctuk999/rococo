@@ -1,14 +1,22 @@
 # Rococo
 
-* Web application for storing museums, artists, and their paintings.
-* Content viewing is available for unauthenticated users. 
-* Adding and editing require oauth2 authorization.
+* Web-приложение для хранения музеев, художников и их картин.
+* Просмотр контента доступен для неавторизованных пользователей.
+* Добавление и редактирование требует oauth2 авторизацию.
 
 <img src="rococo.png" width="800">
 
-### Component Interaction
+### Взаимодействие компонент
 
-The backend is implemented as microservices, with which the front end interacts through a gateway.
+Бэкенд реализован в виде микросервисов, c которыми фронт взаимодействует с помощью gateway.
 
-Full scheme:
+Полная схема:
 <img src="rococo-components.png" width="1000">
+
+## Запуск сервисов
+
+### Локальный запуск
+
+### Запуск в Docker-контейнерах
+
+## E2E-Тесты

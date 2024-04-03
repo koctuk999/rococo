@@ -3,6 +3,7 @@ package guru.qa.rococo.service;
 import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.model.KafkaUpdatedJson;
 import guru.qa.rococo.model.MuseumEntityBuilder;
 import guru.qa.rococo.service.api.GrpcCountryApi;
 import io.grpc.stub.StreamObserver;
@@ -10,10 +11,10 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,10 +33,20 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     private final MuseumRepository museumRepository;
     private final GrpcCountryApi grpcCountryApi;
 
+    private final KafkaTemplate kafkaTemplate;
+
+    private final String topic;
+
     @Autowired
-    public GrpcMuseumService(MuseumRepository museumRepository, GrpcCountryApi grpcCountryApi) {
+    public GrpcMuseumService(
+            MuseumRepository museumRepository,
+            GrpcCountryApi grpcCountryApi,
+            KafkaTemplate kafkaTemplate,
+            @Value("${topic.name}") String topic) {
         this.museumRepository = museumRepository;
         this.grpcCountryApi = grpcCountryApi;
+        this.kafkaTemplate = kafkaTemplate;
+        this.topic = topic;
     }
 
     @Override
@@ -100,6 +111,13 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
             museumEntity.setCountryId(fromString(request.getGeo().getCountry().getId()));
             responseObserver.onNext(toGrpcMuseum(museumRepository.save(museumEntity)));
             LOG.info("### Museum updated " + museumEntity.getId());
+
+            KafkaUpdatedJson kafkaUpdatedJson = new KafkaUpdatedJson(
+                    "museum",
+                    museumEntity.getId()
+            );
+            kafkaTemplate.send(topic,kafkaUpdatedJson);
+            LOG.info("### Kafka topic [updated] sent message %s###".formatted(kafkaUpdatedJson));
         }
         responseObserver.onCompleted();
     }
