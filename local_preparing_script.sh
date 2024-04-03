@@ -6,7 +6,6 @@ docker rm $(docker ps -a -q)
 docker run --name rococo-db -p 5432:5432 \
 -e POSTGRES_USER=postgres \
 -e POSTGRES_PASSWORD=secret \
--e POSTGRES_MULTIPLE_DATABASES="rococo-auth","rococo-userdata","rococo-artist","rococo-painting","rococo-museum","rococo-country" \
 -v rococo-data:/var/lib/postgresql/data \
 -d postgres:15.1
 
@@ -18,3 +17,6 @@ docker run --name=kafka -e KAFKA_BROKER_ID=1 \
 -e KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1 \
 -e KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1 \
 -p 9092:9092 -d confluentinc/cp-kafka:7.3.2
+
+cd ./rococo-client && \
+npm run dev

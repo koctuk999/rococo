@@ -4,13 +4,16 @@ import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.rococo.data.ArtistEntity;
 import guru.qa.rococo.data.repository.ArtistRepository;
 import guru.qa.rococo.model.ArtistEntityBuilder;
+import guru.qa.rococo.model.KafkaUpdatedJson;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,9 +31,18 @@ public class GrpcArtistService extends RococoArtistServiceGrpc.RococoArtistServi
 
     private final ArtistRepository artistRepository;
 
+    private final KafkaTemplate kafkaTemplate;
+
+    private final String topic;
+
     @Autowired
-    public GrpcArtistService(ArtistRepository artistRepository) {
+    public GrpcArtistService(
+            ArtistRepository artistRepository,
+            KafkaTemplate kafkaTemplate,
+            @Value("${topic.name}") String topic) {
         this.artistRepository = artistRepository;
+        this.kafkaTemplate = kafkaTemplate;
+        this.topic = topic;
     }
 
     @Override
@@ -93,6 +105,13 @@ public class GrpcArtistService extends RococoArtistServiceGrpc.RococoArtistServi
             artistEntity.setPhoto(request.getPhoto().getBytes());
             responseObserver.onNext(toGrpcArtist(artistRepository.save(artistEntity)));
             LOG.info("### Artist updated " + artistEntity.getId());
+
+            KafkaUpdatedJson kafkaUpdatedJson = new KafkaUpdatedJson(
+                    "artist",
+                    artistEntity.getId()
+            );
+            kafkaTemplate.send(topic,kafkaUpdatedJson);
+            LOG.info("### Kafka topic [updated] sent message %s###".formatted(kafkaUpdatedJson));
         }
         responseObserver.onCompleted();
     }

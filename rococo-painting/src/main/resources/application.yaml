@@ -42,6 +42,11 @@ spring:
   config:
     activate:
       on-profile: 'local'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      group-id: 'painting'
+      auto-offset-reset: earliest
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rococo-painting'
 
@@ -58,6 +63,12 @@ spring:
   config:
     activate:
       on-profile: 'docker'
+  kafka:
+    bootstrap-servers: 'kafka:9092'
+    consumer:
+      group-id: 'painting'
+      auto-offset-reset: earliest
+
   datasource:
     url: 'jdbc:postgresql://rococo-db:5432/rococo-painting'
 

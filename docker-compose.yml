@@ -132,6 +132,26 @@ services:
       - rococo-network
     dns_search: .
 
+  auth.rococo.dc:
+    container_name: auth.rococo.dc
+    image: koctuk999/rococo-auth:latest
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: "wget --spider http://localhost:9000/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+    depends_on:
+      rococo-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - rococo-network
+    dns_search: .
+
   userdata.rococo.dc:
     container_name: userdata.rococo.dc
     image: koctuk999/rococo-userdata:latest
@@ -149,26 +169,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
-    networks:
-      - rococo-network
-    dns_search: .
-
-  auth.rococo.dc:
-    container_name: auth.rococo.dc
-    image: koctuk999/rococo-auth:latest
-    ports:
-      - "9000:9000"
-    healthcheck:
-      test: "wget --spider http://localhost:9000/actuator/health || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: always
-    depends_on:
-      rococo-db:
+      auth.rococo.dc:
         condition: service_healthy
-      kafka:
-        condition: service_started
     networks:
       - rococo-network
     dns_search: .
