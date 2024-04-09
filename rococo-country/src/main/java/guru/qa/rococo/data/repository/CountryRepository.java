@@ -13,5 +13,8 @@ import java.util.UUID;
 public interface CountryRepository extends JpaRepository<CountryEntity, UUID> {
     @Nonnull
     Page<CountryEntity> findAll(@Nonnull Pageable pageable);
+
     Optional<CountryEntity> findById(UUID uuid);
+
+    Optional<CountryEntity> findByCountryName(String country);
 }

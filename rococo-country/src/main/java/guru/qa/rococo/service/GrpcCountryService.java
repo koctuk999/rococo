@@ -12,7 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static com.google.rpc.Code.NOT_FOUND;
+import static com.google.rpc.Status.newBuilder;
+import static io.grpc.protobuf.StatusProto.toStatusRuntimeException;
 
 @GrpcService
 public class GrpcCountryService extends RococoCountryServiceGrpc.RococoCountryServiceImplBase {
@@ -47,6 +52,27 @@ public class GrpcCountryService extends RococoCountryServiceGrpc.RococoCountrySe
                         UUID.fromString(request.getId())
                 ).get().toGrpc()
         );
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getCountryByName(CountryByNameRequest request, StreamObserver<Country> responseObserver) {
+        Optional<CountryEntity> byCountryName = countryRepository.findByCountryName(
+                request.getName()
+        );
+        if (byCountryName.isPresent()) {
+            responseObserver.onNext(
+                    byCountryName.get().toGrpc()
+            );
+        } else {
+            responseObserver.onError(
+                    toStatusRuntimeException(newBuilder()
+                            .setCode(NOT_FOUND.getNumber())
+                            .setMessage("Country not found")
+                            .build()
+                    )
+            );
+        }
         responseObserver.onCompleted();
     }
 }

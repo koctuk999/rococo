@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Common tests")
-public class CommonTest extends BaseWebTest {
+public class NavigateTest extends BaseWebTest {
 
     @DisplayName("First simple test")
     @Test
