@@ -11,6 +11,7 @@ option java_outer_classname = "RococoCountryProto";
 service RococoCountryService{
   rpc GetCountries(CountriesRequest) returns (CountriesResponse) {}
   rpc GetCountryById(CountryByIdRequest) returns (Country){}
+  rpc GetCountryByName(CountryByNameRequest) returns (Country){}
 }
 
 message CountriesRequest{
@@ -30,4 +31,8 @@ message Country{
 
 message CountryByIdRequest{
   string id = 1;
+}
+
+message CountryByNameRequest{
+  string name = 1;
 }

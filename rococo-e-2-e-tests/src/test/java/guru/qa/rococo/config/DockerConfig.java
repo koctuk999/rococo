@@ -1,36 +1,36 @@
 package guru.qa.rococo.config;
 
-public class LocalConfig implements Config{
+public class DockerConfig implements Config {
 
-    static final LocalConfig instance = new LocalConfig();
+    static final DockerConfig instance = new DockerConfig();
 
     @Override
     public String frontUrl() {
-        return "http://127.0.0.1:3000";
+        return "http://client.rococo.dc";
     }
 
     @Override
     public String dbUrl() {
-        return "localhost";
+        return "rococo-db";
     }
 
     @Override
     public String countryGrpcHost() {
-        return "localhost";
+        return "country.rococo.dc";
     }
 
     @Override
     public String museumGrpcHost() {
-        return "localhost";
+        return "museum.rococo.dc";
     }
 
     @Override
     public String artistGrpcHost() {
-        return "localhost";
+        return "artist.rococo.dc";
     }
 
     @Override
     public String paintingGrpcHost() {
-        return "localhost";
+        return "painting.rococo.dc";
     }
 }

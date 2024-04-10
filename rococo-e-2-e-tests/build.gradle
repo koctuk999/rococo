@@ -55,6 +55,11 @@ dependencies {
     testImplementation "io.qameta.allure:allure-grpc:${allureVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
+    testImplementation(project(":rococo-grpc"))
+    testImplementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    testImplementation "io.grpc:grpc-stub:${grpcVersion}"
+    testImplementation "io.grpc:grpc-netty:${grpcVersion}"
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 tasks.withType(JavaCompile) {
