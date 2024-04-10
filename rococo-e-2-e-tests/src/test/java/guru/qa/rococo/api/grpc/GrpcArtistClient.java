@@ -1,5 +1,6 @@
 package guru.qa.rococo.api.grpc;
 
+import guru.qa.grpc.rococo.grpc.Artist;
 import guru.qa.grpc.rococo.grpc.RococoArtistServiceGrpc.RococoArtistServiceBlockingStub;
 import guru.qa.rococo.config.Config;
 import io.grpc.Channel;
@@ -19,4 +20,8 @@ public class GrpcArtistClient {
             .build();
 
     private static final RococoArtistServiceBlockingStub rococoArtistServiceBlockingStub = newBlockingStub(artistChannel);
+
+    public Artist addArtist(Artist artist) {
+        return rococoArtistServiceBlockingStub.addArtist(artist);
+    }
 }
