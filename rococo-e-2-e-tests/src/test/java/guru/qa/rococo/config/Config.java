@@ -3,7 +3,9 @@ package guru.qa.rococo.config;
 public interface Config {
 
     static Config getInstance() {
-        return DockerConfig.instance;
+        return "docker".equals(System.getProperty("test.env"))
+                ? DockerConfig.instance
+                : LocalConfig.instance;
     }
 
     String frontUrl();
@@ -11,6 +13,7 @@ public interface Config {
     String dbUrl();
 
     String countryGrpcHost();
+
     String museumGrpcHost();
 
     String artistGrpcHost();

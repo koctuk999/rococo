@@ -7,13 +7,13 @@ import guru.qa.rococo.api.grpc.GrpcCountryClient;
 import guru.qa.rococo.api.grpc.GrpcMuseumClient;
 import guru.qa.rococo.core.annotations.TestMuseum;
 import guru.qa.rococo.core.annotations.TestPainting;
-import guru.qa.rococo.utils.RandomUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Optional;
 
-import static guru.qa.rococo.utils.Helpers.getPhotoByPath;
+import static guru.qa.rococo.utils.ImageHelper.MUSEUM_PHOTO_PATH;
+import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 import static guru.qa.rococo.utils.RandomUtils.*;
 
 public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
@@ -42,7 +42,7 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
                     ? countryClient.getCountries(20, null).getCountry(0).getId()
                     : countryClient.getCountryByName(annotationData.countryName()).getId();
 
-            String photo = genRandomPhoto();
+            String photo = getPhotoByPath(MUSEUM_PHOTO_PATH);
 
             Museum museum = Museum
                     .newBuilder()

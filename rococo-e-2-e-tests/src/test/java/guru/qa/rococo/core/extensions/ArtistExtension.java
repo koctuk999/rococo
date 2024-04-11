@@ -4,6 +4,7 @@ import guru.qa.grpc.rococo.grpc.Artist;
 import guru.qa.rococo.api.grpc.GrpcArtistClient;
 import guru.qa.rococo.core.annotations.TestArtist;
 import guru.qa.rococo.core.annotations.TestPainting;
+import guru.qa.rococo.utils.ImageHelper;
 import guru.qa.rococo.utils.RandomUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
@@ -11,6 +12,8 @@ import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Optional;
 
+import static guru.qa.rococo.utils.ImageHelper.ARTIST_PHOTO_PATH;
+import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 import static guru.qa.rococo.utils.RandomUtils.*;
 
 public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
@@ -34,7 +37,7 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
         if (annotationData != null) {
             String name = annotationData.name().isEmpty() ? genRandomName() : annotationData.name();
             String biography = annotationData.biography().isEmpty() ? genRandomDescription(50) : annotationData.biography();
-            String photo = genRandomPhoto();
+            String photo = getPhotoByPath(ARTIST_PHOTO_PATH);
             Artist artist = Artist
                     .newBuilder()
                     .setName(name)

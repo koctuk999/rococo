@@ -25,7 +25,5 @@ public class RandomUtils {
 
     public static String genRandomTitle() {return faker.company().name();}
 
-    public static String genRandomPhoto() {return faker.company().logo();}
-
     public static String genRandomCity() {return faker.address().cityName();}
 }

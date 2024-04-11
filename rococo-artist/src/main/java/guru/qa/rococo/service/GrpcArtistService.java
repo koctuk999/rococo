@@ -3,7 +3,6 @@ package guru.qa.rococo.service;
 import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.rococo.data.ArtistEntity;
 import guru.qa.rococo.data.repository.ArtistRepository;
-import guru.qa.rococo.model.ArtistEntityBuilder;
 import guru.qa.rococo.model.KafkaUpdatedJson;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -127,11 +126,11 @@ public class GrpcArtistService extends RococoArtistServiceGrpc.RococoArtistServi
     }
 
     private ArtistEntity toArtistEntity(Artist artist) {
-        return new ArtistEntityBuilder()
-                .setId(artist.getId().isEmpty() ? null : UUID.fromString(artist.getId()))
-                .setName(artist.getName())
-                .setBiography(artist.getBiography())
-                .setPhoto(artist.getPhoto().getBytes())
+        return ArtistEntity.builder()
+                .id(artist.getId().isEmpty() ? null : UUID.fromString(artist.getId()))
+                .name(artist.getName())
+                .biography(artist.getBiography())
+                .photo(artist.getPhoto().getBytes())
                 .build();
     }
 }

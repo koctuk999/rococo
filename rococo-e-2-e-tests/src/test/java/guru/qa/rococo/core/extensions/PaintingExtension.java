@@ -5,6 +5,7 @@ import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.grpc.rococo.grpc.Painting;
 import guru.qa.rococo.api.grpc.GrpcPaintingClient;
 import guru.qa.rococo.core.annotations.TestPainting;
+import guru.qa.rococo.utils.ImageHelper;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 import static guru.qa.rococo.core.extensions.ArtistExtension.ARTIST_NAMESPACE;
 import static guru.qa.rococo.core.extensions.MuseumExtension.MUSEUM_NAMESPACE;
+import static guru.qa.rococo.utils.ImageHelper.PAINTING_PHOTO_PATH;
+import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 import static guru.qa.rococo.utils.RandomUtils.*;
 
 public class PaintingExtension implements BeforeEachCallback, ParameterResolver {
@@ -27,15 +30,15 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
             TestPainting annotationsData = annotation.get();
             String title = annotationsData.title().isEmpty() ? genRandomTitle() : annotationsData.title();
             String description = annotationsData.description().isEmpty() ? genRandomDescription(50) : annotationsData.description();
-            String content = genRandomPhoto();
+            String content = getPhotoByPath(PAINTING_PHOTO_PATH);
 
-            Artist artist = (Artist) extensionContext
+            Artist artist = extensionContext
                     .getStore(ARTIST_NAMESPACE)
-                    .get(extensionContext.getUniqueId());
+                    .get(extensionContext.getUniqueId(), Artist.class);
 
-            Museum museum = (Museum) extensionContext
+            Museum museum = extensionContext
                     .getStore(MUSEUM_NAMESPACE)
-                    .get(extensionContext.getUniqueId());
+                    .get(extensionContext.getUniqueId(), Museum.class);
 
             Painting painting = Painting
                     .newBuilder()

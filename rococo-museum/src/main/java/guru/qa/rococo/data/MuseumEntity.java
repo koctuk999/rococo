@@ -1,6 +1,8 @@
 package guru.qa.rococo.data;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Builder
+@Data
 @Table(name = "museum")
 public class MuseumEntity {
     @Id
@@ -33,20 +37,16 @@ public class MuseumEntity {
     @Column(name = "country_id")
     private UUID countryId;
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        MuseumEntity that = (MuseumEntity) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+    public MuseumEntity(UUID id, String title, String description, byte[] photo, String city, UUID countryId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.photo = photo;
+        this.city = city;
+        this.countryId = countryId;
     }
 
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public MuseumEntity() {
     }
 }
 

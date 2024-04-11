@@ -4,7 +4,6 @@ import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import guru.qa.rococo.model.KafkaUpdatedJson;
-import guru.qa.rococo.model.MuseumEntityBuilder;
 import guru.qa.rococo.service.api.GrpcCountryApi;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -116,7 +115,7 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
                     "museum",
                     museumEntity.getId()
             );
-            kafkaTemplate.send(topic,kafkaUpdatedJson);
+            kafkaTemplate.send(topic, kafkaUpdatedJson);
             LOG.info("### Kafka topic [updated] sent message %s###".formatted(kafkaUpdatedJson));
         }
         responseObserver.onCompleted();
@@ -138,13 +137,13 @@ public class GrpcMuseumService extends RococoMuseumServiceGrpc.RococoMuseumServi
     }
 
     private MuseumEntity toMuseumEntity(Museum museum) {
-        return new MuseumEntityBuilder()
-                .setId(museum.getId().isEmpty() ? null : UUID.fromString(museum.getId()))
-                .setTitle(museum.getTitle())
-                .setDescription(museum.getDescription())
-                .setPhoto(museum.getPhoto().getBytes())
-                .setCity(museum.getGeo().getCity())
-                .setCountryId(UUID.fromString(museum.getGeo().getCountry().getId()))
+        return MuseumEntity.builder()
+                .id(museum.getId().isEmpty() ? null : UUID.fromString(museum.getId()))
+                .title(museum.getTitle())
+                .description(museum.getDescription())
+                .photo(museum.getPhoto().getBytes())
+                .city(museum.getGeo().getCity())
+                .countryId(UUID.fromString(museum.getGeo().getCountry().getId()))
                 .build();
     }
 }
