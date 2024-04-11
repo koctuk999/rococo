@@ -1,25 +1,36 @@
 package guru.qa.rococo.page;
 
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.rococo.page.component.BaseComponent;
-import guru.qa.rococo.page.component.Header;
-import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
+import static org.openqa.selenium.By.className;
+import static org.openqa.selenium.By.tagName;
 
 public class ArtistPage extends BasePage<ArtistPage> {
-    private final Header header = new Header();
-    private final SelenideElement searchInput = $("input[title='Искать художников...']");
 
-    public Header getHeader() {
-        return header;
+    private final SelenideElement name = $(className("qa-artist-name"));
+    private final SelenideElement biography = $(className("qa-artist-biography"));
+    private final SelenideElement photo = $(className("qa-artist-photo")).$(className("avatar-image"));
+
+
+    public String getName() {
+        return name.text();
+    }
+
+    public String getBiography() {
+        return biography.text();
+    }
+
+    public String getPhoto() {
+        return photo.getAttribute("src");
     }
 
     @Override
-    @Step("Wait for artist page loaded")
     public ArtistPage waitForPageLoaded() {
-        searchInput.should(visible);
+        name.shouldBe(not(text("undefined")));
         return this;
     }
 }

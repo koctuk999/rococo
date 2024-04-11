@@ -2,25 +2,37 @@ package guru.qa.rococo.page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.rococo.page.component.Header;
-import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static org.openqa.selenium.By.className;
 
 public class PaintingPage extends BasePage<PaintingPage> {
-    private final Header header = new Header();
 
-    private final SelenideElement searchInput = $("input[title='Искать картины...']");
+    private final SelenideElement title = $(className("qa-painting-title"));
+    private final SelenideElement description = $(className("qa-painting-description"));
+    private final SelenideElement artist = $(className("qa-painting-artist"));
+    private final SelenideElement content = $(className("qa-painting-content"));
 
-    public Header getHeader() {
-        return header;
+    public String getTitle() {
+        return title.text();
+    }
+
+    public String getDescription() {
+        return description.text();
+    }
+
+    public String getArtist() {
+        return artist.text();
+    }
+
+    public String getContent() {
+        return content.getAttribute("src");
     }
 
     @Override
-    @Step("Wait for painting page loaded")
     public PaintingPage waitForPageLoaded() {
-        searchInput.should(visible);
+        title.shouldBe(not(text("undefined")));
         return this;
     }
 }

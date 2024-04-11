@@ -2,9 +2,9 @@
     import { museumsStore } from '$lib/stores/museum.store';
 </script>
 
-<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 class qa-museum-items">
     {#each $museumsStore.data as museum(museum.id)}
-        <li>
+        <li class="qa-museum-item">
             <a href={`/museum/${museum.id}`}>
                 <img class="max-w-full rounded-lg object-cover w-full h-96" src={museum.photo} alt={museum.title}>
                 <div class="text-center">{museum.title}</div>

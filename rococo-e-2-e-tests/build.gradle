@@ -59,7 +59,10 @@ dependencies {
     testImplementation "io.grpc:grpc-protobuf:${grpcVersion}"
     testImplementation "io.grpc:grpc-stub:${grpcVersion}"
     testImplementation "io.grpc:grpc-netty:${grpcVersion}"
+    testImplementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    testImplementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation 'org.hamcrest:hamcrest-all:1.3'
 }
 
 tasks.withType(JavaCompile) {
