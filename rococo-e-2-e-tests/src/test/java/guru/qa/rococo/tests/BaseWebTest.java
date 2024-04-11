@@ -5,5 +5,5 @@ import guru.qa.rococo.page.MainPage;
 
 @WebTest
 public abstract class BaseWebTest {
-    MainPage mainPage = new MainPage();
+    protected MainPage mainPage = new MainPage();
 }
