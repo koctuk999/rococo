@@ -3,6 +3,7 @@ package guru.qa.rococo.api.grpc;
 import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.grpc.rococo.grpc.RococoCountryServiceGrpc.RococoCountryServiceBlockingStub;
 import guru.qa.rococo.config.Config;
+import guru.qa.rococo.utils.GrpcLogInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.qameta.allure.grpc.AllureGrpc;
@@ -15,7 +16,7 @@ public class GrpcCountryClient {
     private static final Config CFG = Config.getInstance();
 
     private static final Channel countryChannel = ManagedChannelBuilder.forAddress(CFG.countryGrpcHost(), CFG.countryGrpcPort())
-            .intercept(new AllureGrpc())
+            .intercept(new AllureGrpc(), new GrpcLogInterceptor())
             .usePlaintext()
             .build();
 

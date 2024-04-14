@@ -6,6 +6,7 @@ import guru.qa.grpc.rococo.grpc.Painting;
 import guru.qa.rococo.api.grpc.GrpcPaintingClient;
 import guru.qa.rococo.core.annotations.TestPainting;
 import guru.qa.rococo.utils.ImageHelper;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -17,6 +18,7 @@ import static guru.qa.rococo.core.extensions.MuseumExtension.MUSEUM_NAMESPACE;
 import static guru.qa.rococo.utils.ImageHelper.PAINTING_PHOTO_PATH;
 import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 import static guru.qa.rococo.utils.RandomUtils.*;
+import static io.qameta.allure.Allure.step;
 
 public class PaintingExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -26,34 +28,35 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
         Optional<TestPainting> annotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), TestPainting.class);
+
         if (annotation.isPresent()) {
             TestPainting annotationsData = annotation.get();
-            String title = annotationsData.title().isEmpty() ? genRandomTitle() : annotationsData.title();
-            String description = annotationsData.description().isEmpty() ? genRandomDescription(50) : annotationsData.description();
-            String content = getPhotoByPath(PAINTING_PHOTO_PATH);
+            step("Precondition step: generate Painting", () -> {
+                String title = annotationsData.title().isEmpty() ? genRandomTitle() : annotationsData.title();
+                String description = annotationsData.description().isEmpty() ? genRandomDescription(50) : annotationsData.description();
+                String content = getPhotoByPath(PAINTING_PHOTO_PATH);
 
-            Artist artist = extensionContext
-                    .getStore(ARTIST_NAMESPACE)
-                    .get(extensionContext.getUniqueId(), Artist.class);
+                Artist artist = extensionContext
+                        .getStore(ARTIST_NAMESPACE)
+                        .get(extensionContext.getUniqueId(), Artist.class);
 
-            Museum museum = extensionContext
-                    .getStore(MUSEUM_NAMESPACE)
-                    .get(extensionContext.getUniqueId(), Museum.class);
+                Museum museum = extensionContext
+                        .getStore(MUSEUM_NAMESPACE)
+                        .get(extensionContext.getUniqueId(), Museum.class);
 
-            Painting painting = Painting
-                    .newBuilder()
-                    .setTitle(title)
-                    .setDescription(description)
-                    .setContent(content)
-                    .setArtist(artist)
-                    .setMuseum(museum)
-                    .build();
-            Painting addedPainting = paintingClient.addPainting(painting);
-
-            extensionContext
-                    .getStore(PAINTING_NAMESPACE)
-                    .put(extensionContext.getUniqueId(), addedPainting);
-
+                Painting painting = Painting
+                        .newBuilder()
+                        .setTitle(title)
+                        .setDescription(description)
+                        .setContent(content)
+                        .setArtist(artist)
+                        .setMuseum(museum)
+                        .build();
+                Painting addedPainting = paintingClient.addPainting(painting);
+                extensionContext
+                        .getStore(PAINTING_NAMESPACE)
+                        .put(extensionContext.getUniqueId(), addedPainting);
+            });
         }
     }
 

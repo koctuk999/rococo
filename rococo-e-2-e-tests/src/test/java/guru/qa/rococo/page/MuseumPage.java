@@ -1,27 +1,42 @@
 package guru.qa.rococo.page;
 
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.rococo.page.component.Header;
-import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
+import static org.openqa.selenium.By.className;
 
 public class MuseumPage extends BasePage<MuseumPage> {
 
-    private final Header header = new Header();
+    private final SelenideElement title = $(className("qa-museum-title"));
+    private final SelenideElement description = $(className("qa-museum-description"));
+    private final SelenideElement geo = $(className("qa-museum-geo"));
+    private final SelenideElement photo = $(className("qa-museum-photo"));
 
-    private final SelenideElement searchInput = $("input[title='Искать музей...']");
+    public String getTitle() {
+        return title.text();
+    }
 
-    public Header getHeader() {
-        return header;
+    public String getDescription() {
+        return description.text();
+    }
+
+    public String getCountry() {
+        return geo.text().split(", ")[0];
+    }
+
+    public String getCity() {
+        return geo.text().split(", ")[1];
+    }
+
+    public String getPhoto() {
+        return photo.getAttribute("src");
     }
 
     @Override
-    @Step("Wait for museum page loaded")
     public MuseumPage waitForPageLoaded() {
-        searchInput.should(visible);
+        title.shouldBe(not(text("undefined")));
         return this;
     }
 }

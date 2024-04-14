@@ -3,6 +3,7 @@ package guru.qa.rococo.api.grpc;
 import guru.qa.grpc.rococo.grpc.Artist;
 import guru.qa.grpc.rococo.grpc.RococoArtistServiceGrpc.RococoArtistServiceBlockingStub;
 import guru.qa.rococo.config.Config;
+import guru.qa.rococo.utils.GrpcLogInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.qameta.allure.grpc.AllureGrpc;
@@ -15,7 +16,7 @@ public class GrpcArtistClient {
 
     private static final Channel artistChannel = ManagedChannelBuilder
             .forAddress(CFG.artistGrpcHost(), CFG.artistGrpcPort())
-            .intercept(new AllureGrpc())
+            .intercept(new AllureGrpc(), new GrpcLogInterceptor())
             .usePlaintext()
             .build();
 

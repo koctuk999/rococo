@@ -1,8 +1,8 @@
 package guru.qa.rococo.page;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.rococo.page.component.Header;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -12,6 +12,10 @@ public class MainPage extends BasePage<MainPage> {
     private final SelenideElement paintings = $("img[alt='Ссылка на картины']");
     private final SelenideElement artists = $("img[alt='Ссылка на художников']");
     private final SelenideElement museums = $("img[alt='Ссылка на музеи']");
+
+    public Header getHeader() {
+        return header;
+    }
 
     @Step("Open main page")
     public MainPage open() {
@@ -29,20 +33,20 @@ public class MainPage extends BasePage<MainPage> {
     }
 
     @Step("Open museum page")
-    public MuseumPage toMuseumPage() {
+    public MuseumsPage toMuseumPage() {
         museums.click();
-        return new MuseumPage();
+        return new MuseumsPage();
     }
 
     @Step("Open artist page")
-    public ArtistPage toArtistPage() {
+    public ArtistsPage toArtistPage() {
         artists.click();
-        return new ArtistPage();
+        return new ArtistsPage();
     }
 
     @Step("Open painting page")
-    public PaintingPage toPaintingPage() {
+    public PaintingsPage toPaintingPage() {
         paintings.click();
-        return new PaintingPage();
+        return new PaintingsPage();
     }
 }

@@ -2,9 +2,13 @@ package guru.qa.rococo.tests.web;
 
 import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.rococo.core.annotations.TestMuseum;
+import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.tests.BaseWebTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static guru.qa.rococo.utils.CustomAssert.check;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Museum tests")
 public class MuseumWebTest extends BaseWebTest {
@@ -13,9 +17,41 @@ public class MuseumWebTest extends BaseWebTest {
     @TestMuseum
     @DisplayName("Check museum")
     public void getMuseum(Museum museum) {
-        mainPage
+        MuseumPage museumPage = mainPage
                 .open()
                 .toMuseumPage()
+                .clickMuseum(museum.getTitle())
                 .waitForPageLoaded();
+
+        check("museum have expected title",
+                museumPage.getTitle(), equalTo(museum.getTitle())
+        );
+
+        check("museum have expected description",
+                museumPage.getDescription(), equalTo(museum.getDescription())
+        );
+
+        check("museum have expected country",
+                museumPage.getCountry(), equalTo(
+                        museum
+                                .getGeo()
+                                .getCountry()
+                                .getName()
+                )
+        );
+
+        check("museum have expected city",
+                museumPage.getCity(), equalTo(
+                        museum
+                                .getGeo()
+                                .getCity()
+                )
+        );
+
+        check("museum have expected photo",
+                museumPage.getPhoto(), equalTo(museum.getPhoto())
+        );
+
+
     }
 }

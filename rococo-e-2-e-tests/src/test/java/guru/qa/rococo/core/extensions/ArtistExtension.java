@@ -6,6 +6,8 @@ import guru.qa.rococo.core.annotations.TestArtist;
 import guru.qa.rococo.core.annotations.TestPainting;
 import guru.qa.rococo.utils.ImageHelper;
 import guru.qa.rococo.utils.RandomUtils;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import static guru.qa.rococo.utils.ImageHelper.ARTIST_PHOTO_PATH;
 import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 import static guru.qa.rococo.utils.RandomUtils.*;
+import static io.qameta.allure.Allure.step;
 
 public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -24,7 +27,6 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
         TestArtist annotationData = null;
-
         Optional<TestPainting> paintingAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), TestPainting.class);
         Optional<TestArtist> artistAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), TestArtist.class);
 
@@ -35,19 +37,22 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
         }
 
         if (annotationData != null) {
-            String name = annotationData.name().isEmpty() ? genRandomName() : annotationData.name();
-            String biography = annotationData.biography().isEmpty() ? genRandomDescription(50) : annotationData.biography();
-            String photo = getPhotoByPath(ARTIST_PHOTO_PATH);
-            Artist artist = Artist
-                    .newBuilder()
-                    .setName(name)
-                    .setBiography(biography)
-                    .setPhoto(photo)
-                    .build();
-            Artist addedArtist = grpcArtistClient.addArtist(artist);
-            extensionContext
-                    .getStore(ARTIST_NAMESPACE)
-                    .put(extensionContext.getUniqueId(), addedArtist);
+            TestArtist finalAnnotationData = annotationData;
+            step("Precondition step: generate Artist", () -> {
+                String name = finalAnnotationData.name().isEmpty() ? genRandomName() : finalAnnotationData.name();
+                String biography = finalAnnotationData.biography().isEmpty() ? genRandomDescription(50) : finalAnnotationData.biography();
+                String photo = getPhotoByPath(ARTIST_PHOTO_PATH);
+                Artist artist = Artist
+                        .newBuilder()
+                        .setName(name)
+                        .setBiography(biography)
+                        .setPhoto(photo)
+                        .build();
+                Artist addedArtist = grpcArtistClient.addArtist(artist);
+                extensionContext
+                        .getStore(ARTIST_NAMESPACE)
+                        .put(extensionContext.getUniqueId(), addedArtist);
+            });
         }
     }
 

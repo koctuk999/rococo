@@ -5,6 +5,7 @@ import guru.qa.grpc.rococo.grpc.Painting;
 import guru.qa.grpc.rococo.grpc.RococoPaintingServiceGrpc;
 import guru.qa.grpc.rococo.grpc.RococoPaintingServiceGrpc.RococoPaintingServiceBlockingStub;
 import guru.qa.rococo.config.Config;
+import guru.qa.rococo.utils.GrpcLogInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.qameta.allure.grpc.AllureGrpc;
@@ -15,7 +16,7 @@ public class GrpcPaintingClient {
 
     private static final Channel paintingChannel = ManagedChannelBuilder
             .forAddress(CFG.paintingGrpcHost(), CFG.paintingGrpcPort())
-            .intercept(new AllureGrpc())
+            .intercept(new AllureGrpc(), new GrpcLogInterceptor())
             .usePlaintext()
             .build();
 

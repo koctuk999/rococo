@@ -2,6 +2,7 @@ package guru.qa.rococo.page;
 
 import com.codeborne.selenide.Configuration;
 import guru.qa.rococo.config.Config;
+import guru.qa.rococo.page.component.Header;
 import io.qameta.allure.Step;
 
 import static guru.qa.rococo.config.Config.getInstance;
@@ -12,6 +13,8 @@ public abstract class BasePage<T extends BasePage> {
     }
 
     protected static final Config CFG = getInstance();
+
+    protected final Header header = new Header();
 
     public abstract T waitForPageLoaded();
 }
