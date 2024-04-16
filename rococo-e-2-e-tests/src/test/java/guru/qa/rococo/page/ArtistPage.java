@@ -15,6 +15,12 @@ public class ArtistPage extends BasePage<ArtistPage> {
     private final SelenideElement biography = $(className("qa-artist-biography"));
     private final SelenideElement photo = $(className("qa-artist-photo")).$(className("avatar-image"));
 
+    @Override
+    public ArtistPage waitForPageLoaded() {
+        name.shouldBe(not(text("undefined")));
+        return this;
+    }
+
 
     public String getName() {
         return name.text();
@@ -28,9 +34,4 @@ public class ArtistPage extends BasePage<ArtistPage> {
         return photo.getAttribute("src");
     }
 
-    @Override
-    public ArtistPage waitForPageLoaded() {
-        name.shouldBe(not(text("undefined")));
-        return this;
-    }
 }

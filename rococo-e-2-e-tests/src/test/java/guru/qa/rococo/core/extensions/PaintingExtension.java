@@ -4,9 +4,7 @@ import guru.qa.grpc.rococo.grpc.Artist;
 import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.grpc.rococo.grpc.Painting;
 import guru.qa.rococo.api.grpc.GrpcPaintingClient;
-import guru.qa.rococo.core.annotations.TestPainting;
-import guru.qa.rococo.utils.ImageHelper;
-import io.qameta.allure.Step;
+import guru.qa.rococo.core.annotations.GeneratePainting;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -27,10 +25,10 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
-        Optional<TestPainting> annotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), TestPainting.class);
+        Optional<GeneratePainting> annotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratePainting.class);
 
         if (annotation.isPresent()) {
-            TestPainting annotationsData = annotation.get();
+            GeneratePainting annotationsData = annotation.get();
             step("Precondition step: generate Painting", () -> {
                 String title = annotationsData.title().isEmpty() ? genRandomTitle() : annotationsData.title();
                 String description = annotationsData.description().isEmpty() ? genRandomDescription(50) : annotationsData.description();

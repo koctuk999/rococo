@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Navigation tests")
-public class NavigateWebTest extends BaseWebTest {
+public class NavigateTest extends BaseWebTest {
 
     @DisplayName("Simple navigation test")
     @Test

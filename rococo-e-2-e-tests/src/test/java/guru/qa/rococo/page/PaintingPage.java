@@ -14,6 +14,12 @@ public class PaintingPage extends BasePage<PaintingPage> {
     private final SelenideElement artist = $(className("qa-painting-artist"));
     private final SelenideElement content = $(className("qa-painting-content"));
 
+    @Override
+    public PaintingPage waitForPageLoaded() {
+        title.shouldBe(not(text("undefined")));
+        return this;
+    }
+
     public String getTitle() {
         return title.text();
     }
@@ -30,9 +36,4 @@ public class PaintingPage extends BasePage<PaintingPage> {
         return content.getAttribute("src");
     }
 
-    @Override
-    public PaintingPage waitForPageLoaded() {
-        title.shouldBe(not(text("undefined")));
-        return this;
-    }
 }

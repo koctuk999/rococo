@@ -1,7 +1,7 @@
 package guru.qa.rococo.tests.web;
 
 import guru.qa.grpc.rococo.grpc.Museum;
-import guru.qa.rococo.core.annotations.TestMuseum;
+import guru.qa.rococo.core.annotations.GenerateMuseum;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.tests.BaseWebTest;
 import org.junit.jupiter.api.DisplayName;
@@ -11,15 +11,16 @@ import static guru.qa.rococo.utils.CustomAssert.check;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Museum tests")
-public class MuseumWebTest extends BaseWebTest {
+public class MuseumTest extends BaseWebTest {
 
     @Test
-    @TestMuseum
+    @GenerateMuseum
     @DisplayName("Check museum")
     public void getMuseum(Museum museum) {
         MuseumPage museumPage = mainPage
                 .open()
                 .toMuseumPage()
+                .searchMuseum(museum.getTitle())
                 .clickMuseum(museum.getTitle())
                 .waitForPageLoaded();
 
