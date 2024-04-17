@@ -15,6 +15,7 @@ import static com.codeborne.selenide.Selenide.$$;
 public class MuseumsPage extends BasePage<MuseumsPage> {
 
     private final SelenideElement searchInput = $("input[title='Искать музей...']");
+    private final SelenideElement searchButton = $("img[alt='Иконка поиска']");
 
     private final ElementsCollection museums = $$(By.className("qa-museum-item"));
 
@@ -23,9 +24,15 @@ public class MuseumsPage extends BasePage<MuseumsPage> {
     }
 
     @Override
-    @Step("Wait for museum page loaded")
     public MuseumsPage waitForPageLoaded() {
         searchInput.should(visible);
+        return this;
+    }
+
+    @Step("Search museum")
+    public MuseumsPage searchMuseum(String museumTitle){
+        searchInput.setValue(museumTitle);
+        searchButton.click();
         return this;
     }
 

@@ -23,7 +23,6 @@ public class PaintingsPage extends BasePage<PaintingsPage> {
     }
 
     @Override
-    @Step("Wait for painting page loaded")
     public PaintingsPage waitForPageLoaded() {
         searchInput.should(visible);
         return this;

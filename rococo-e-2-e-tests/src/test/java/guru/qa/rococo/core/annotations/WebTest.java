@@ -1,9 +1,6 @@
 package guru.qa.rococo.core.annotations;
 
-import guru.qa.rococo.core.extensions.ArtistExtension;
-import guru.qa.rococo.core.extensions.BrowserExtension;
-import guru.qa.rococo.core.extensions.MuseumExtension;
-import guru.qa.rococo.core.extensions.PaintingExtension;
+import guru.qa.rococo.core.extensions.*;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,6 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ExtendWith({
         AllureJunit5.class,
         BrowserExtension.class,
+        CreateUserExtension.class,
         MuseumExtension.class,
         ArtistExtension.class,
         PaintingExtension.class

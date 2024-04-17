@@ -22,7 +22,6 @@ public class ArtistsPage extends BasePage<ArtistsPage> {
     }
 
     @Override
-    @Step("Wait for artist page loaded")
     public ArtistsPage waitForPageLoaded() {
         searchInput.should(visible);
         return this;

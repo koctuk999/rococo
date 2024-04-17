@@ -1,11 +1,9 @@
 package guru.qa.rococo.tests.web;
 
-import guru.qa.grpc.rococo.grpc.Artist;
-import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.grpc.rococo.grpc.Painting;
-import guru.qa.rococo.core.annotations.TestArtist;
-import guru.qa.rococo.core.annotations.TestMuseum;
-import guru.qa.rococo.core.annotations.TestPainting;
+import guru.qa.rococo.core.annotations.GenerateArtist;
+import guru.qa.rococo.core.annotations.GenerateMuseum;
+import guru.qa.rococo.core.annotations.GeneratePainting;
 import guru.qa.rococo.page.PaintingPage;
 import guru.qa.rococo.tests.BaseWebTest;
 import org.junit.jupiter.api.DisplayName;
@@ -15,11 +13,11 @@ import static guru.qa.rococo.utils.CustomAssert.check;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Painting test")
-public class PaintingWebTest extends BaseWebTest {
+public class PaintingTest extends BaseWebTest {
 
     @Test
     @DisplayName("Check painting")
-    @TestPainting(artist = @TestArtist, museum = @TestMuseum)
+    @GeneratePainting(artist = @GenerateArtist, museum = @GenerateMuseum)
     public void getPainting(Painting painting) {
         PaintingPage paintingPage = mainPage
                 .open()

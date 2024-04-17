@@ -20,10 +20,12 @@ public class BrowserExtension implements AfterEachCallback, TestExecutionExcepti
 
     @Override
     public void handleTestExecutionException(ExtensionContext extensionContext, Throwable throwable) throws Throwable {
-        ByteArrayInputStream screenshot = new ByteArrayInputStream((
-                (TakesScreenshot) WebDriverRunner.getWebDriver()
-        ).getScreenshotAs(BYTES));
-        Allure.addAttachment("Screenshot after test", screenshot);
-        throw  throwable;
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            ByteArrayInputStream screenshot = new ByteArrayInputStream((
+                    (TakesScreenshot) WebDriverRunner.getWebDriver()
+            ).getScreenshotAs(BYTES));
+            Allure.addAttachment("Screenshot after test", screenshot);
+        }
+        throw throwable;
     }
 }

@@ -17,18 +17,17 @@ public class MainPage extends BasePage<MainPage> {
         return header;
     }
 
-    @Step("Open main page")
-    public MainPage open() {
-        Selenide.open(CFG.frontUrl());
-        return this;
-    }
-
     @Override
-    @Step("Wait for main page loaded")
     public MainPage waitForPageLoaded() {
         paintings.should(visible);
         artists.should(visible);
         museums.should(visible);
+        return this;
+    }
+
+    @Step("Open main page")
+    public MainPage open() {
+        Selenide.open(CFG.frontUrl());
         return this;
     }
 

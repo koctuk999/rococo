@@ -2,7 +2,7 @@ package guru.qa.rococo.tests.web;
 
 
 import guru.qa.grpc.rococo.grpc.Artist;
-import guru.qa.rococo.core.annotations.TestArtist;
+import guru.qa.rococo.core.annotations.GenerateArtist;
 import guru.qa.rococo.page.ArtistPage;
 import guru.qa.rococo.tests.BaseWebTest;
 import org.junit.jupiter.api.DisplayName;
@@ -12,10 +12,10 @@ import static guru.qa.rococo.utils.CustomAssert.check;
 import static org.hamcrest.Matchers.equalTo;
 
 @DisplayName("Artists test")
-public class ArtistWebTest extends BaseWebTest {
+public class ArtistTest extends BaseWebTest {
 
     @Test
-    @TestArtist
+    @GenerateArtist
     @DisplayName("Check artist")
     public void getArtist(Artist artist) {
         ArtistPage artistPage = mainPage

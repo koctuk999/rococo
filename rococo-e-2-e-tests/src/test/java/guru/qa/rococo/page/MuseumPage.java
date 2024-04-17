@@ -14,6 +14,12 @@ public class MuseumPage extends BasePage<MuseumPage> {
     private final SelenideElement geo = $(className("qa-museum-geo"));
     private final SelenideElement photo = $(className("qa-museum-photo"));
 
+    @Override
+    public MuseumPage waitForPageLoaded() {
+        title.shouldBe(not(text("undefined")));
+        return this;
+    }
+
     public String getTitle() {
         return title.text();
     }
@@ -34,9 +40,4 @@ public class MuseumPage extends BasePage<MuseumPage> {
         return photo.getAttribute("src");
     }
 
-    @Override
-    public MuseumPage waitForPageLoaded() {
-        title.shouldBe(not(text("undefined")));
-        return this;
-    }
 }
