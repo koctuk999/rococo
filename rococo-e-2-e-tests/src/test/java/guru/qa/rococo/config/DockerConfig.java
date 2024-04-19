@@ -10,6 +10,11 @@ public class DockerConfig implements Config {
     }
 
     @Override
+    public String authUrl() {
+        return "http://auth.rococo.dc:9000";
+    }
+
+    @Override
     public String dbUrl() {
         return "rococo-db";
     }

@@ -16,5 +16,9 @@ public abstract class BasePage<T extends BasePage> {
 
     protected final Header header = new Header();
 
+    public void signIn() {
+        header.clickLoginButton();
+    }
+
     public abstract T waitForPageLoaded();
 }

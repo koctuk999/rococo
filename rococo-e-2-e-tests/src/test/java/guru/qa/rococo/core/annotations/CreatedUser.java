@@ -8,7 +8,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface GenerateArtist {
-    String name() default "";
-    String biography() default "";
+public @interface CreatedUser {
+    String username() default "";
+
+    String password() default "";
 }

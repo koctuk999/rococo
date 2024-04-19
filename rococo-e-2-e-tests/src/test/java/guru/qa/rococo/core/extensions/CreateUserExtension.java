@@ -1,6 +1,7 @@
 package guru.qa.rococo.core.extensions;
 
-import guru.qa.rococo.core.annotations.CreateUser;
+import guru.qa.rococo.core.annotations.CreatedUser;
+import guru.qa.rococo.core.annotations.LoggedIn;
 import guru.qa.rococo.db.model.*;
 import guru.qa.rococo.db.repository.UserRepository;
 import guru.qa.rococo.db.repository.UserRepositoryHibernate;
@@ -12,19 +13,24 @@ import org.junit.platform.commons.support.AnnotationSupport;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
-
 public class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
     private final UserRepository userRepository = new UserRepositoryHibernate();
-    private final static Namespace CREATE_USER_NAMESPACE = Namespace.create(CreateUserExtension.class);
+    public final static Namespace CREATE_USER_NAMESPACE = Namespace.create(CreateUserExtension.class);
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
-        Optional<CreateUser> annotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), CreateUser.class);
-        if (annotation.isPresent()) {
+        CreatedUser annotationData = null;
+        Optional<LoggedIn> loggedInAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), LoggedIn.class);
+        Optional<CreatedUser> createdUserAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), CreatedUser.class);
 
-            CreateUser annotationData = annotation.get();
+        if (loggedInAnnotation.isPresent()) {
+            annotationData = loggedInAnnotation.get().user();
+        } else if (createdUserAnnotation.isPresent()) {
+            annotationData = createdUserAnnotation.get();
+        }
+
+        if (annotationData != null) {
             String username = annotationData.username().isEmpty()
                     ? RandomUtils.genRandomUsername()
                     : annotationData.username();

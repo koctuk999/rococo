@@ -49,10 +49,9 @@ public class Header extends BaseComponent<Header> {
         return new PaintingsPage();
     }
 
-    @Step("To Login Page")
-    public LoginPage toLoginPage() {
+    @Step("Click login button")
+    public void clickLoginButton() {
         login.click();
-        return new LoginPage();
     }
 
     @Step("Check that user is logged in")
