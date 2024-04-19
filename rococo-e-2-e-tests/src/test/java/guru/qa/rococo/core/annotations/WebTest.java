@@ -13,9 +13,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(TYPE)
 @ExtendWith({
+        ContextHolderExtension.class,
         AllureJunit5.class,
         BrowserExtension.class,
         CreateUserExtension.class,
+        ApiLoginExtension.class,
         MuseumExtension.class,
         ArtistExtension.class,
         PaintingExtension.class

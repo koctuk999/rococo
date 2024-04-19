@@ -8,8 +8,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface CreateUser {
-    String username() default "";
-
-    String password() default "";
+public @interface GeneratedMuseum {
+    String title() default "";
+    String description() default "";
+    String city() default "";
+    String countryName() default "";
 }

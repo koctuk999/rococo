@@ -2,8 +2,8 @@ package guru.qa.rococo.core.extensions;
 
 import guru.qa.grpc.rococo.grpc.Artist;
 import guru.qa.rococo.api.grpc.GrpcArtistClient;
-import guru.qa.rococo.core.annotations.GenerateArtist;
-import guru.qa.rococo.core.annotations.GeneratePainting;
+import guru.qa.rococo.core.annotations.GeneratedArtist;
+import guru.qa.rococo.core.annotations.GeneratedPainting;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
@@ -22,9 +22,9 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
-        GenerateArtist annotationData = null;
-        Optional<GeneratePainting> paintingAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratePainting.class);
-        Optional<GenerateArtist> artistAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GenerateArtist.class);
+        GeneratedArtist annotationData = null;
+        Optional<GeneratedPainting> paintingAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratedPainting.class);
+        Optional<GeneratedArtist> artistAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratedArtist.class);
 
         if (paintingAnnotation.isPresent()) {
             annotationData = paintingAnnotation.get().artist();
@@ -33,7 +33,7 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
         }
 
         if (annotationData != null) {
-            GenerateArtist finalAnnotationData = annotationData;
+            GeneratedArtist finalAnnotationData = annotationData;
             step("Precondition step: generate Artist", () -> {
                 String name = finalAnnotationData.name().isEmpty() ? genRandomName() : finalAnnotationData.name();
                 String biography = finalAnnotationData.biography().isEmpty() ? genRandomDescription(50) : finalAnnotationData.biography();

@@ -5,8 +5,8 @@ import guru.qa.grpc.rococo.grpc.Geo;
 import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.rococo.api.grpc.GrpcCountryClient;
 import guru.qa.rococo.api.grpc.GrpcMuseumClient;
-import guru.qa.rococo.core.annotations.GenerateMuseum;
-import guru.qa.rococo.core.annotations.GeneratePainting;
+import guru.qa.rococo.core.annotations.GeneratedMuseum;
+import guru.qa.rococo.core.annotations.GeneratedPainting;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
@@ -25,9 +25,9 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
-        GenerateMuseum annotationData = null;
-        Optional<GeneratePainting> paintingAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratePainting.class);
-        Optional<GenerateMuseum> museumAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GenerateMuseum.class);
+        GeneratedMuseum annotationData = null;
+        Optional<GeneratedPainting> paintingAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratedPainting.class);
+        Optional<GeneratedMuseum> museumAnnotation = AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), GeneratedMuseum.class);
 
         if (paintingAnnotation.isPresent()) {
             annotationData = paintingAnnotation.get().museum();
@@ -36,7 +36,7 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
         }
 
         if (annotationData != null) {
-            GenerateMuseum finalAnnotationData = annotationData;
+            GeneratedMuseum finalAnnotationData = annotationData;
             step("Precondition step: generate Museum", () -> {
                 String title = finalAnnotationData.title().isEmpty() ? genRandomTitle() : finalAnnotationData.title();
                 String description = finalAnnotationData.description().isEmpty() ? genRandomDescription(50) : finalAnnotationData.description();
