@@ -7,5 +7,4 @@ import guru.qa.rococo.page.MainPage;
 @WebTest
 public abstract class BaseWebTest {
     protected MainPage mainPage = new MainPage();
-    protected LoginPage loginPage = new LoginPage();
 }

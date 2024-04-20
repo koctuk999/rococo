@@ -1,7 +1,7 @@
 <script lang="ts">
     import EditMuseumForm from "$lib/components/forms/museum/EditMuseumForm.svelte";
     import {singleMuseumStore} from "$lib/stores/singleMuseum.store";
-    import { page } from '$app/stores';
+    import {page} from '$app/stores';
     import EditComponent from "$lib/components/EditComponent.svelte";
     import {onMount} from "svelte";
     import {goto} from "$app/navigation";
@@ -12,7 +12,7 @@
 
     onMount(async () => {
         const data = await apiClient.loadMuseum($page.params.id);
-        if(data.error) {
+        if (data.error) {
             errorTrigger(data.error);
             await goto("/not-found");
         } else {
@@ -27,8 +27,10 @@
 <article class="card m-8 p-4 min-h-[90%]">
     <div class="grid grid-cols-1 lg:grid-cols-2 m-4 min-h-full">
         <div>
-            <header class="card-header text-center font-bold qa-museum-title">{$singleMuseumStore.data?.title}</header>
-            <div class="text-center qa-museum-geo">{$singleMuseumStore.data?.geo.country.name}, {$singleMuseumStore.data?.geo?.city}</div>
+            <header class="card-header text-center font-bold"
+                    data-testid="museum-title">{$singleMuseumStore.data?.title}</header>
+            <div class="text-center" data-testid="museum-geo">{$singleMuseumStore.data?.geo.country.name}
+                , {$singleMuseumStore.data?.geo?.city}</div>
             <div class="w-56 m-3 mx-auto">
                 <EditComponent
                         dataTestId="edit-museum"
@@ -43,8 +45,9 @@
                         dataKey="title"
                 />
             </div>
-            <div class="qa-museum-description">{$singleMuseumStore.data?.description}</div>
+            <div data-testid="museum-description">{$singleMuseumStore.data?.description}</div>
         </div>
-        <img src={$singleMuseumStore.data?.photo} alt={$singleMuseumStore.data?.title} class="my-4 mx-auto w-full qa-museum-photo"/>
+        <img src={$singleMuseumStore.data?.photo} alt={$singleMuseumStore.data?.title} class="my-4 mx-auto w-full"
+             data-testid="museum-photo"/>
     </div>
 </article>

@@ -1,21 +1,21 @@
 package guru.qa.rococo.page.component;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.rococo.page.ArtistsPage;
-import guru.qa.rococo.page.LoginPage;
-import guru.qa.rococo.page.MuseumsPage;
-import guru.qa.rococo.page.PaintingsPage;
+import guru.qa.rococo.page.*;
+import guru.qa.rococo.page.artist.ArtistsPage;
+import guru.qa.rococo.page.museum.MuseumsPage;
+import guru.qa.rococo.page.painting.PaintingsPage;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selenide.$;
-import static org.openqa.selenium.By.className;
+import static guru.qa.rococo.selenide.condition.PhotoCondition.imageCondition;
+import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class Header extends BaseComponent<Header> {
     public Header() {
-        super($("header[id='shell-header']"));
+        super($(byDataTestId("app-bar")));
     }
 
     private final SelenideElement title = this.self.$("a[href*='/']");
@@ -23,8 +23,10 @@ public class Header extends BaseComponent<Header> {
     private final SelenideElement museum = this.self.$("a[href*='/museum']");
     private final SelenideElement painting = this.self.$("a[href*='/painting']");
 
-    private final SelenideElement login = this.self.$(className("qa-login"));
-    private final SelenideElement avatar = this.self.$(className("avatar-initials"));
+    private final SelenideElement loginButton = this.self.$(byDataTestId("login-button"));
+    private final SelenideElement profileButton = this.self.$(byDataTestId("profile-button"));
+
+    private final SelenideElement avatar = profileButton.$(byDataTestId("avatar"));
 
     @Step("Return to Main Page")
     public void toMainPage() {
@@ -51,11 +53,24 @@ public class Header extends BaseComponent<Header> {
 
     @Step("Click login button")
     public void clickLoginButton() {
-        login.click();
+        loginButton.click();
     }
 
     @Step("Check that user is logged in")
     public void checkLoggedIn() {
         avatar.shouldBe(visible);
+    }
+
+    @Step("To profile")
+    public ProfilePage toProfile() {
+        profileButton.click();
+        return new ProfilePage();
+    }
+
+    @Step("Check avatar")
+    public void checkAvatar(String avatarPath) {
+        this.avatar
+                .$(byTagName("img"))
+                .should(imageCondition(avatarPath, true));
     }
 }

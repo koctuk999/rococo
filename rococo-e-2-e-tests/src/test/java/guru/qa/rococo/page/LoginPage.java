@@ -1,6 +1,5 @@
 package guru.qa.rococo.page;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -12,6 +11,7 @@ public class LoginPage extends BasePage<LoginPage> {
     private final SelenideElement usernameInput = $("input[name='username']");
     private final SelenideElement passwordInput = $("input[name='password']");
     private final SelenideElement submitButton = $("button[type='submit']");
+    private final SelenideElement registerButton = $("a[href='/register']");
 
     @Override
     public LoginPage waitForPageLoaded() {
@@ -32,7 +32,27 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     @Step("Submit login")
-    public void submit() {
+    public MainPage successSubmit() {
         submitButton.click();
+        return new MainPage();
+    }
+
+    @Step("Submit login")
+    public LoginPage errorSubmit() {
+        submitButton.click();
+        return this;
+    }
+
+    @Step("Sign in [login: {0}] [password: {1}]")
+    public void signIn(String username, String password){
+        setUsername(username);
+        setPassword(password);
+        successSubmit();
+    }
+
+    @Step("Register click")
+    public RegisterPage toRegister(){
+        registerButton.click();
+        return new RegisterPage();
     }
 }

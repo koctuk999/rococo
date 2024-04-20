@@ -11,6 +11,10 @@ public class RandomUtils {
         return faker.name().username();
     }
 
+    public static String generateRandomPassword() {
+        return faker.bothify("????####");
+    }
+
     public static String genRandomName() {
         return faker.name().firstName();
     }

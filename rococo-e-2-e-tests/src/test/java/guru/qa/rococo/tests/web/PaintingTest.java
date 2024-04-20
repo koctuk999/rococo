@@ -1,49 +1,91 @@
 package guru.qa.rococo.tests.web;
 
+import guru.qa.grpc.rococo.grpc.Artist;
+import guru.qa.grpc.rococo.grpc.Museum;
 import guru.qa.grpc.rococo.grpc.Painting;
-import guru.qa.rococo.core.annotations.GeneratedArtist;
-import guru.qa.rococo.core.annotations.GeneratedMuseum;
-import guru.qa.rococo.core.annotations.GeneratedPainting;
-import guru.qa.rococo.page.PaintingPage;
+import guru.qa.rococo.core.annotations.*;
+import guru.qa.rococo.db.model.PaintingEntity;
+import guru.qa.rococo.db.repository.painting.PaintingRepository;
+import guru.qa.rococo.db.repository.painting.PaintingRepositoryHibernate;
+import guru.qa.rococo.page.painting.PaintingsPage;
 import guru.qa.rococo.tests.BaseWebTest;
+import guru.qa.rococo.utils.ImageHelper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
+
+import static guru.qa.rococo.core.TestTag.*;
+import static guru.qa.rococo.page.component.message.SuccessMessage.PAINTING_ADDED;
 import static guru.qa.rococo.utils.CustomAssert.check;
+import static guru.qa.rococo.utils.ImageHelper.PAINTING_PHOTO_PATH;
+import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
+import static guru.qa.rococo.utils.RandomUtils.genRandomDescription;
+import static guru.qa.rococo.utils.RandomUtils.genRandomTitle;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Painting tests")
+@Tags({
+        @Tag(CLIENT_ACCEPTANCE),
+        @Tag(PAINTING_ACCEPTANCE),
+        @Tag(MUSEUM_ACCEPTANCE),
+        @Tag(ARTIST_ACCEPTANCE)
+})
 public class PaintingTest extends BaseWebTest {
 
+    PaintingRepository paintingRepository = new PaintingRepositoryHibernate();
+
     @Test
-    @DisplayName("Check painting")
+    @DisplayName("Get painting")
     @GeneratedPainting(artist = @GeneratedArtist, museum = @GeneratedMuseum)
     public void getPainting(Painting painting) {
-        PaintingPage paintingPage = mainPage
+        mainPage
                 .open()
-                .toPaintingPage()
+                .toPaintingsPage()
                 .clickPainting(painting.getTitle())
-                .waitForPageLoaded();
+                .checkTitle(painting.getTitle())
+                .checkDescription(painting.getDescription())
+                .checkArtist(painting.getArtist().getName())
+                .checkContent(painting.getContent(), false);
 
-        check(
-                "painting have expected title",
-                paintingPage.getTitle(), equalTo(painting.getTitle())
-        );
+    }
 
-        check(
-                "painting have expected description",
-                paintingPage.getDescription(), equalTo(painting.getDescription())
-        );
+    @Test
+    @LoggedIn(user = @CreatedUser)
+    @GeneratedArtist
+    @GeneratedMuseum
+    @DisplayName("Add painting")
+    public void addPainting(Artist artist, Museum museum) {
+        String title = genRandomTitle();
+        String description = genRandomDescription(100);
+        String content = PAINTING_PHOTO_PATH;
 
-        check(
-                "painting have expected artist",
-                paintingPage.getArtist(), equalTo(painting.getArtist().getName())
-        );
+        mainPage
+                .open()
+                .toPaintingsPage()
+                .addPainting()
+                .setTitle(title)
+                .setDescription(description)
+                .setContent(content)
+                .selectArtist(artist.getName())
+                .selectMuseum(museum.getTitle())
+                .submit()
+                .checkToasterMessage(PAINTING_ADDED);
 
-        check(
-                "painting have expected content",
-                paintingPage.getContent(), equalTo(painting.getContent())
-        );
-
+        PaintingEntity paintingEntity = paintingRepository.findPaintingByTitle(title);
+        check("expected title in db",
+                paintingEntity.getTitle(), equalTo(title));
+        check("expected description in db",
+                paintingEntity.getDescription(), equalTo(description));
+        check("expected content in db",
+                new String(paintingEntity.getContent(), UTF_8),
+                equalTo(getPhotoByPath(content)));
+        check("expected artistId in db",
+                paintingEntity.getArtistId().toString(), equalTo(artist.getId()));
+        check("expected museumId in db",
+                paintingEntity.getMuseumId().toString(), equalTo(museum.getId()));
     }
 }

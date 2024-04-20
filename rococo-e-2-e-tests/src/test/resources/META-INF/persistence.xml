@@ -6,5 +6,9 @@
         <class>guru.qa.rococo.db.model.UserAuthEntity</class>
         <class>guru.qa.rococo.db.model.AuthorityEntity</class>
         <class>guru.qa.rococo.db.model.UserDataEntity</class>
+        <class>guru.qa.rococo.db.model.CountryEntity</class>
+        <class>guru.qa.rococo.db.model.MuseumEntity</class>
+        <class>guru.qa.rococo.db.model.ArtistEntity</class>
+        <class>guru.qa.rococo.db.model.PaintingEntity</class>
     </persistence-unit>
 </persistence>

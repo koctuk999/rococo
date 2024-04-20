@@ -1,4 +1,4 @@
-package guru.qa.rococo.db.repository;
+package guru.qa.rococo.db.repository.user;
 
 import guru.qa.rococo.db.model.UserAuthEntity;
 import guru.qa.rococo.db.model.UserDataEntity;
@@ -13,7 +13,12 @@ public interface UserRepository {
     UserDataEntity createInData(UserDataEntity userDataEntity);
 
     Optional<UserAuthEntity> findByIdInAuth(UUID id);
+
     Optional<UserDataEntity> findByIdInUserdata(UUID id);
+
+    UserAuthEntity findByUsernameInAuth(String username);
+
+    UserDataEntity findByUsernameInUserdata(String username);
 
     void deleteInAuth(UUID id);
 
