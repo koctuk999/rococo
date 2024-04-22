@@ -2,7 +2,6 @@ package guru.qa.rococo.db.repository.user;
 
 import guru.qa.rococo.db.hibernate.JpaService;
 import guru.qa.rococo.db.hibernate.ThreadLocalEntityManager;
-import guru.qa.rococo.db.model.MuseumEntity;
 import guru.qa.rococo.db.model.UserAuthEntity;
 import guru.qa.rococo.db.model.UserDataEntity;
 import io.qameta.allure.Step;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 import static guru.qa.rococo.db.Database.*;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
-import static guru.qa.rococo.utils.Helper.retryAction;
+import static guru.qa.rococo.utils.Helper.attempt;
 
 public class UserRepositoryHibernate extends JpaService implements UserRepository {
 
@@ -65,7 +64,7 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
                         UserAuthEntity.class
                 )
                 .setParameter("username", username);
-        return retryAction(
+        return attempt(
                 10,
                 1000,
                 () -> query.getSingleResult()
@@ -82,7 +81,7 @@ public class UserRepositoryHibernate extends JpaService implements UserRepositor
                         UserDataEntity.class
                 )
                 .setParameter("username", username);
-        return retryAction(
+        return attempt(
                 10,
                 1000,
                 () -> query.getSingleResult()

@@ -3,14 +3,13 @@ package guru.qa.rococo.db.repository.museum;
 import guru.qa.rococo.db.hibernate.JpaService;
 import guru.qa.rococo.db.hibernate.ThreadLocalEntityManager;
 import guru.qa.rococo.db.model.MuseumEntity;
-import guru.qa.rococo.utils.Helper;
 import io.qameta.allure.Step;
 import jakarta.persistence.TypedQuery;
 import lombok.SneakyThrows;
 
 import static guru.qa.rococo.db.Database.MUSEUM;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
-import static guru.qa.rococo.utils.Helper.retryAction;
+import static guru.qa.rococo.utils.Helper.attempt;
 import static java.util.Map.of;
 
 public class MuseumRepositoryHibernate extends JpaService implements MuseumRepository {
@@ -28,7 +27,7 @@ public class MuseumRepositoryHibernate extends JpaService implements MuseumRepos
                         MuseumEntity.class
                 )
                 .setParameter("title", title);
-        return retryAction(
+        return attempt(
                 10,
                 1000,
                 () -> query.getSingleResult()

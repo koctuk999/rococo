@@ -9,7 +9,7 @@ import lombok.SneakyThrows;
 
 import static guru.qa.rococo.db.Database.PAINTING;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
-import static guru.qa.rococo.utils.Helper.retryAction;
+import static guru.qa.rococo.utils.Helper.attempt;
 import static java.util.Map.of;
 
 public class PaintingRepositoryHibernate extends JpaService implements PaintingRepository {
@@ -27,7 +27,7 @@ public class PaintingRepositoryHibernate extends JpaService implements PaintingR
                         PaintingEntity.class
                 )
                 .setParameter("title", title);
-        return retryAction(
+        return attempt(
                 10,
                 1000,
                 () -> query.getSingleResult()
