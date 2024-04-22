@@ -9,7 +9,7 @@ import lombok.SneakyThrows;
 
 import static guru.qa.rococo.db.Database.ARTIST;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
-import static guru.qa.rococo.utils.Helper.retryAction;
+import static guru.qa.rococo.utils.Helper.attempt;
 import static java.util.Map.of;
 
 public class ArtistRepositoryHibernate extends JpaService implements ArtistRepository {
@@ -27,7 +27,7 @@ public class ArtistRepositoryHibernate extends JpaService implements ArtistRepos
                         ArtistEntity.class
                 )
                 .setParameter("name", name);
-        return retryAction(
+        return attempt(
                 10,
                 1000,
                 () -> query.getSingleResult()

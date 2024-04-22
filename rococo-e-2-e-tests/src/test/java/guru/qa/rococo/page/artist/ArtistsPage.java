@@ -30,6 +30,7 @@ public class ArtistsPage extends BasePage<ArtistsPage> {
 
     @Step("Click artist")
     public ArtistPage clickArtist(String artistName) {
+        scrollToElement($(byDataTestId("artist-items")).$(byText(artistName)), artists);
         artists
                 .findBy(text(artistName))
                 .$(byClassName("avatar-image"))

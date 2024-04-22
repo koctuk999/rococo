@@ -23,6 +23,7 @@ public class MuseumsPage extends BasePage<MuseumsPage> {
 
     private final ElementsCollection museums = $$(byDataTestId("museum-item"));
 
+
     @Override
     public MuseumsPage waitForPageLoaded() {
         searchPlaceholder.getSelf().should(visible);
@@ -31,6 +32,7 @@ public class MuseumsPage extends BasePage<MuseumsPage> {
 
     @Step("To museum")
     public MuseumPage clickMuseum(String museumTitle) {
+        scrollToElement($(byDataTestId("museum-items")).$(byText(museumTitle)), museums);
         museums
                 .findBy(text(museumTitle))
                 .$(byAttribute("alt", museumTitle))

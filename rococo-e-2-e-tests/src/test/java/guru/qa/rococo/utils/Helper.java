@@ -1,11 +1,12 @@
 package guru.qa.rococo.utils;
 
 import io.qameta.allure.Allure;
-import jakarta.persistence.NoResultException;
+import org.openqa.selenium.TimeoutException;
 
 import java.util.function.Supplier;
 
 import static io.qameta.allure.Allure.step;
+import static java.lang.System.currentTimeMillis;
 import static java.lang.Thread.sleep;
 
 public class Helper {
@@ -17,7 +18,7 @@ public class Helper {
                 : str;
     }
 
-    public static <T> T retryAction(int maxRetries, long poolingInterval, Supplier<T> action) throws InterruptedException {
+    public static <T> T attempt(int maxRetries, long poolingInterval, Supplier<T> action) throws InterruptedException {
         int retries = 0;
         while (retries < maxRetries) {
             try {
@@ -30,6 +31,22 @@ public class Helper {
             }
         }
         throw new IllegalStateException("Expected result was not received after %s attempts".formatted(maxRetries));
+    }
+
+    public static void waitFor(
+            String description,
+            long timeout,
+            Supplier<Boolean> action
+    ) {
+        long endTime = currentTimeMillis() + timeout;
+        boolean condition = false;
+        while (!condition) {
+            Allure.step("Wait for %s".formatted(description));
+            condition = action.get();
+            if (currentTimeMillis() > endTime) {
+                throw new TimeoutException("Did not wait for %s after %d ms".formatted(description, timeout));
+            }
+        }
     }
 }
 

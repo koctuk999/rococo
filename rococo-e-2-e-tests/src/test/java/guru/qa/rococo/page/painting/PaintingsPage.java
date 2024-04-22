@@ -31,6 +31,7 @@ public class PaintingsPage extends BasePage<PaintingsPage> {
 
     @Step("Click painting")
     public PaintingPage clickPainting(String paintingTitle) {
+        scrollToElement($(byDataTestId("painting-items")).$(byText(paintingTitle)), paintings);
         paintings
                 .findBy(text(paintingTitle))
                 .$(byAttribute("alt", paintingTitle))
