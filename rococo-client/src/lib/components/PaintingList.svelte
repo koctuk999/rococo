@@ -5,12 +5,12 @@
 </script>
 
 
-<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 qa-painting-items">
+<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4" data-testid="painting-items">
     {#each paintings as painting(painting.id)}
-        <li class="qa-painting-item">
+        <li data-testid="painting-item">
             <a href={`/painting/${painting?.id}`}>
                 <img class="max-w-full rounded-lg object-cover w-full h-96" src={painting.content} alt={painting.title}>
-                <div class="text-center">{painting?.title}</div>
+                <div class="text-center" data-testid="painting-title">{painting?.title}</div>
             </a>
         </li>
     {/each}

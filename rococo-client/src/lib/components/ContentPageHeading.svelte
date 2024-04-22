@@ -2,7 +2,7 @@
 	import { SearchIcon } from "$lib/types/Icon";
     import {sessionStore} from "$lib/stores/sessionStore";
 
-    
+
     let search = "";
 
     export let searchPlaceholder: string;
@@ -20,7 +20,7 @@
     {/if}
 </div>
 
-<div class="flex justify-center mb-4 mx-8">
+<div class="flex justify-center mb-4 mx-8" data-testid="search">
     <input class="input" bind:value={search} title={searchPlaceholder} type="search" placeholder={searchPlaceholder} on:keypress={(evt) => {
         if(evt.key === "Enter") {
             loadFunction(search);

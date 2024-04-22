@@ -10,7 +10,11 @@ import static org.apache.commons.lang3.StringUtils.substringAfter;
 @RequiredArgsConstructor
 public enum Database {
     AUTH("jdbc:postgresql://%s:%d/rococo-auth"),
-    USERDATA("jdbc:postgresql://%s:%d/rococo-userdata");
+    USERDATA("jdbc:postgresql://%s:%d/rococo-userdata"),
+    COUNTRY("jdbc:postgresql://%s:%d/rococo-country"),
+    PAINTING("jdbc:postgresql://%s:%d/rococo-painting"),
+    MUSEUM("jdbc:postgresql://%s:%d/rococo-museum"),
+    ARTIST("jdbc:postgresql://%s:%d/rococo-artist");
 
     private final String url;
     private static final Config cfg = getInstance();
