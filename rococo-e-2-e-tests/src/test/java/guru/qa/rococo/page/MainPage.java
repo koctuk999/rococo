@@ -37,18 +37,18 @@ public class MainPage extends BasePage<MainPage> {
     @Step("Open museum page")
     public MuseumsPage toMuseumsPage() {
         museums.click();
-        return new MuseumsPage();
+        return new MuseumsPage().waitForPageLoaded();
     }
 
     @Step("Open artist page")
     public ArtistsPage toArtistsPage() {
         artists.click();
-        return new ArtistsPage();
+        return new ArtistsPage().waitForPageLoaded();
     }
 
     @Step("Open painting page")
     public PaintingsPage toPaintingsPage() {
         paintings.click();
-        return new PaintingsPage();
+        return new PaintingsPage().waitForPageLoaded();
     }
 }

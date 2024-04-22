@@ -5,6 +5,10 @@ grpc:
   server:
     port: 9096
 
+  client:
+    GLOBAL:
+      max-inbound-message-size: 104857600
+
 spring:
   application:
     name: rococo-painting

@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static guru.qa.rococo.core.TestTag.*;
 
-@DisplayName("Login tests")
+@DisplayName("Login web tests")
 @Tags({@Tag(AUTH_ACCEPTANCE), @Tag(USERDATA_ACCEPTANCE), @Tag(CLIENT_ACCEPTANCE)})
-public class LoginTest extends BaseWebTest {
+public class LoginWebTest extends BaseWebTest {
 
     @Test
     @CreatedUser

@@ -10,7 +10,6 @@ import guru.qa.rococo.db.repository.country.CountryRepository;
 import guru.qa.rococo.db.repository.country.CountryRepositoryHibernate;
 import guru.qa.rococo.db.repository.museum.MuseumRepository;
 import guru.qa.rococo.db.repository.museum.MuseumRepositoryHibernate;
-import guru.qa.rococo.page.museum.MuseumsPage;
 import guru.qa.rococo.tests.BaseWebTest;
 import guru.qa.rococo.utils.ImageHelper;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +17,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Optional;
-
 import static guru.qa.rococo.core.TestTag.*;
-import static guru.qa.rococo.core.TestTag.ARTIST_ACCEPTANCE;
 import static guru.qa.rococo.page.component.message.SuccessMessage.MUSEUM_ADDED;
 import static guru.qa.rococo.utils.CustomAssert.check;
 import static guru.qa.rococo.utils.ImageHelper.MUSEUM_PHOTO_PATH;
@@ -31,12 +25,12 @@ import static guru.qa.rococo.utils.RandomUtils.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DisplayName("Museum tests")
+@DisplayName("Museum web tests")
 @Tags({@Tag(CLIENT_ACCEPTANCE), @Tag(MUSEUM_ACCEPTANCE)})
-public class MuseumTest extends BaseWebTest {
+public class MuseumWebTest extends BaseWebTest {
 
-    CountryRepository countryRepository = new CountryRepositoryHibernate();
-    MuseumRepository museumRepository = new MuseumRepositoryHibernate();
+    private CountryRepository countryRepository = new CountryRepositoryHibernate();
+    private MuseumRepository museumRepository = new MuseumRepositoryHibernate();
 
     @Test
     @GeneratedMuseum

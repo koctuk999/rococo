@@ -7,15 +7,11 @@ import guru.qa.rococo.core.annotations.*;
 import guru.qa.rococo.db.model.PaintingEntity;
 import guru.qa.rococo.db.repository.painting.PaintingRepository;
 import guru.qa.rococo.db.repository.painting.PaintingRepositoryHibernate;
-import guru.qa.rococo.page.painting.PaintingsPage;
 import guru.qa.rococo.tests.BaseWebTest;
-import guru.qa.rococo.utils.ImageHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
-
-import java.nio.charset.StandardCharsets;
 
 import static guru.qa.rococo.core.TestTag.*;
 import static guru.qa.rococo.page.component.message.SuccessMessage.PAINTING_ADDED;
@@ -27,16 +23,16 @@ import static guru.qa.rococo.utils.RandomUtils.genRandomTitle;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DisplayName("Painting tests")
+@DisplayName("Painting web tests")
 @Tags({
         @Tag(CLIENT_ACCEPTANCE),
         @Tag(PAINTING_ACCEPTANCE),
         @Tag(MUSEUM_ACCEPTANCE),
         @Tag(ARTIST_ACCEPTANCE)
 })
-public class PaintingTest extends BaseWebTest {
+public class PaintingWebTest extends BaseWebTest {
 
-    PaintingRepository paintingRepository = new PaintingRepositoryHibernate();
+    private PaintingRepository paintingRepository = new PaintingRepositoryHibernate();
 
     @Test
     @DisplayName("Get painting")
