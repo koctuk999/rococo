@@ -2,6 +2,7 @@ package guru.qa.rococo.api.grpc;
 
 import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.grpc.rococo.grpc.RococoCountryServiceGrpc.RococoCountryServiceBlockingStub;
+import guru.qa.rococo.api.grpc.channel.ChannelProvider;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.utils.GrpcLogInterceptor;
 import io.grpc.Channel;
@@ -11,14 +12,14 @@ import io.qameta.allure.grpc.AllureGrpc;
 import javax.annotation.Nullable;
 
 import static guru.qa.grpc.rococo.grpc.RococoCountryServiceGrpc.newBlockingStub;
+import static org.apache.commons.lang3.tuple.Pair.of;
 
 public class GrpcCountryClient {
     private static final Config CFG = Config.getInstance();
 
-    private static final Channel countryChannel = ManagedChannelBuilder.forAddress(CFG.countryGrpcHost(), CFG.countryGrpcPort())
-            .intercept(new AllureGrpc(), new GrpcLogInterceptor())
-            .usePlaintext()
-            .build();
+    private static final Channel countryChannel = ChannelProvider
+            .INSTANCE
+            .channel(of(CFG.countryGrpcHost(),CFG.countryGrpcPort()));
 
     private static final RococoCountryServiceBlockingStub rococoCountryServiceBlockingStub = newBlockingStub(countryChannel);
 

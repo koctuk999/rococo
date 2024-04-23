@@ -26,10 +26,10 @@ import static guru.qa.rococo.utils.RandomUtils.genRandomName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DisplayName("Artist tests")
+@DisplayName("Artist web tests")
 @Tags({@Tag(CLIENT_ACCEPTANCE), @Tag(ARTIST_ACCEPTANCE)})
-public class ArtistTest extends BaseWebTest {
-    ArtistRepository artistRepository = new ArtistRepositoryHibernate();
+public class ArtistWebTest extends BaseWebTest {
+    private ArtistRepository artistRepository = new ArtistRepositoryHibernate();
 
     @Test
     @GeneratedArtist

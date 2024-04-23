@@ -13,9 +13,9 @@ import java.util.Base64;
 
 public class ImageHelper {
 
-    public static final String MUSEUM_PHOTO_PATH = "images/museum_image_1.jpg";
-    public static final String ARTIST_PHOTO_PATH = "images/artist_image_1.jpg";
-    public static final String PAINTING_PHOTO_PATH = "images/painting_image_1.jpg";
+    public static final String MUSEUM_PHOTO_PATH = "images/museum_image.jpg";
+    public static final String ARTIST_PHOTO_PATH = "images/artist_image.jpg";
+    public static final String PAINTING_PHOTO_PATH = "images/painting_image.jpg";
     public static final String USER_PHOTO_PATH = "images/user_image.jpg";
 
     @SneakyThrows

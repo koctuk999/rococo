@@ -50,12 +50,14 @@ public class PaintingUpsertModal extends BasePage<PaintingUpsertModal> {
 
     @Step("Select artist {0}")
     public PaintingUpsertModal selectArtist(String artistName) {
+        scrollToElement($(byText(artistName)), artistSelect.$$(byTagName("option")));
         this.artistSelect.selectOptionContainingText(artistName);
         return this;
     }
 
-    @Step("Select painting {0}")
+    @Step("Select museum {0}")
     public PaintingUpsertModal selectMuseum(String museumTitle) {
+        scrollToElement($(byText(museumTitle)), museumSelect.$$(byTagName("option")));
         this.museumSelect.selectOptionContainingText(museumTitle);
         return this;
     }

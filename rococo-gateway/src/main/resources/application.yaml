@@ -8,7 +8,7 @@ spring:
 grpc:
   client:
     GLOBAL:
-      max-inbound-message-size: 14194304
+      max-inbound-message-size: 104857600
 
 ---
 spring:

@@ -16,10 +16,10 @@ import static guru.qa.rococo.utils.RandomUtils.genRandomUsername;
 import static guru.qa.rococo.utils.RandomUtils.generateRandomPassword;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@DisplayName("Registration tests")
+@DisplayName("Registration web tests")
 @Tags({@Tag(AUTH_ACCEPTANCE), @Tag(USERDATA_ACCEPTANCE), @Tag(CLIENT_ACCEPTANCE)})
-public class RegisterTest extends BaseWebTest {
-    UserRepository userRepository = new UserRepositoryHibernate();
+public class RegisterWebTest extends BaseWebTest {
+    private UserRepository userRepository = new UserRepositoryHibernate();
 
     @Test
     @DisplayName("Success registration test")

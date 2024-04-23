@@ -16,9 +16,9 @@ import static guru.qa.rococo.utils.ImageHelper.USER_PHOTO_PATH;
 import static guru.qa.rococo.utils.RandomUtils.genRandomLastName;
 import static guru.qa.rococo.utils.RandomUtils.genRandomName;
 
-@DisplayName("Profile tests")
+@DisplayName("Profile web tests")
 @Tags({@Tag(CLIENT_ACCEPTANCE), @Tag(USERDATA_ACCEPTANCE)})
-public class ProfileTest extends BaseWebTest {
+public class ProfileWebTest extends BaseWebTest {
 
     @DisplayName("Check user's profile")
     @Test

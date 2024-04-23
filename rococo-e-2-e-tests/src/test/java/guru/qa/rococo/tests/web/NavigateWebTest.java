@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static guru.qa.rococo.core.TestTag.CLIENT_ACCEPTANCE;
 
-@DisplayName("Navigation tests")
+@DisplayName("Navigation web tests")
 @Tag(CLIENT_ACCEPTANCE)
-public class NavigateTest extends BaseWebTest {
+public class NavigateWebTest extends BaseWebTest {
 
     @DisplayName("Simple navigation test")
     @Test
