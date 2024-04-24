@@ -4,17 +4,14 @@ import com.codeborne.selenide.LocalStorage;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SessionStorage;
 import com.codeborne.selenide.WebDriverRunner;
-import guru.qa.rococo.api.rest.auth.AuthApiClient;
+import guru.qa.rococo.api.rest.auth.AuthClient;
 import guru.qa.rococo.api.rest.cookie.ThreadSafeCookieManager;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.core.annotations.LoggedIn;
+import guru.qa.rococo.core.annotations.Token;
 import guru.qa.rococo.db.model.TestUser;
-import guru.qa.rococo.page.BasePage;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Optional;
 
@@ -23,18 +20,19 @@ import static guru.qa.rococo.core.extensions.CreateUserExtension.CREATE_USER_NAM
 import static guru.qa.rococo.utils.OauthUtils.generateCodeChallange;
 import static guru.qa.rococo.utils.OauthUtils.generateCodeVerifier;
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.create;
+import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
 
-public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecutionCallback {
+public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
     private static final Config CFG = Config.getInstance();
-    private final AuthApiClient authApiClient = new AuthApiClient();
+    private final AuthClient authClient = new AuthClient();
 
     public static final Namespace API_LOGIN_NAMESPACE = create(ApiLoginExtension.class);
 
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
-        Optional<LoggedIn> annotation = AnnotationSupport.findAnnotation(
+        Optional<LoggedIn> annotation = findAnnotation(
                 extensionContext.getRequiredTestMethod(), LoggedIn.class
         );
 
@@ -50,27 +48,42 @@ public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecution
             final String codeChallenge = generateCodeChallange(codeVerifier);
             setCodeVerifier(codeVerifier);
             setCodeChallenge(codeChallenge);
-            authApiClient.doLogin(username, password);
+            authClient.doLogin(username, password);
 
-            Selenide.open(CFG.frontUrl());
+            if (annotation.get().setCookies()){
+                Selenide.open(CFG.frontUrl());
+                SessionStorage sessionStorage = Selenide.sessionStorage();
+                sessionStorage.setItem("codeChallenge", getCodChallenge());
+                sessionStorage.setItem("id_token", getToken());
+                sessionStorage.setItem("codeVerifier", getCodeVerifier());
 
-            SessionStorage sessionStorage = Selenide.sessionStorage();
-            sessionStorage.setItem("codeChallenge", getCodChallenge());
-            sessionStorage.setItem("id_token", getToken());
-            sessionStorage.setItem("codeVerifier", getCodeVerifier());
+                LocalStorage localStorage = Selenide.localStorage();
+                localStorage.setItem("codeChallenge", getCodChallenge());
+                localStorage.setItem("id_token", getToken());
+                localStorage.setItem("codeVerifier", getCodeVerifier());
 
-            LocalStorage localStorage = Selenide.localStorage();
-            localStorage.setItem("codeChallenge", getCodChallenge());
-            localStorage.setItem("id_token", getToken());
-            localStorage.setItem("codeVerifier", getCodeVerifier());
+                WebDriverRunner
+                        .getWebDriver()
+                        .manage()
+                        .addCookie(jsessionCookie());
 
-            WebDriverRunner
-                    .getWebDriver()
-                    .manage()
-                    .addCookie(jsessionCookie());
-
-            Selenide.refresh();
+                Selenide.refresh();
+            }
         }
+    }
+
+    @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return findAnnotation(parameterContext.getParameter(), Token.class).isPresent()
+                && parameterContext
+                .getParameter()
+                .getType()
+                .isAssignableFrom(String.class);
+    }
+
+    @Override
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return "Bearer %s".formatted(getToken());
     }
 
     @Override

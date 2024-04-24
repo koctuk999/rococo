@@ -25,13 +25,14 @@ public class MainPage extends BasePage<MainPage> {
         paintings.should(visible);
         artists.should(visible);
         museums.should(visible);
+        header.getSelf().should(visible);
         return this;
     }
 
     @Step("Open main page")
     public MainPage open() {
         Selenide.open(CFG.frontUrl());
-        return this;
+        return this.waitForPageLoaded();
     }
 
     @Step("Open museum page")

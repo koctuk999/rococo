@@ -1,10 +1,7 @@
 package guru.qa.rococo.db.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
@@ -18,7 +15,9 @@ import static jakarta.persistence.FetchType.EAGER;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "\"user\"")
+@NoArgsConstructor
 public class UserAuthEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,6 +45,17 @@ public class UserAuthEntity implements Serializable {
     @OneToMany(fetch = EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private List<AuthorityEntity> authorities = new ArrayList<>();
 
+    public UserAuthEntity(UUID id, String username, String password, Boolean enabled, Boolean accountNonExpired, Boolean accountNonLocked, Boolean credentialsNonExpired, List<AuthorityEntity> authorities) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.authorities = authorities;
+    }
+
     public void addAuthorities(AuthorityEntity... authorities) {
         for (AuthorityEntity authority : authorities) {
             this.authorities.add(authority);
@@ -56,35 +66,5 @@ public class UserAuthEntity implements Serializable {
     public void removeAuthority(AuthorityEntity authority) {
         this.authorities.remove(authority);
         authority.setUser(null);
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        UserAuthEntity that = (UserAuthEntity) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "UserAuthEntity{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", accountNonExpired=" + accountNonExpired +
-                ", accountNonLocked=" + accountNonLocked +
-                ", credentialsNonExpired=" + credentialsNonExpired +
-                ", authorities=" + authorities +
-                '}';
     }
 }

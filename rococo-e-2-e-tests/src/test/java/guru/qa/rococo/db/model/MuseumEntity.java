@@ -2,21 +2,17 @@ package guru.qa.rococo.db.model;
 
 import guru.qa.grpc.rococo.grpc.Museum;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 import static java.util.UUID.fromString;
 
-@Getter
-@Setter
 @Entity
 @Builder
 @Data
 @Table(name = "museum")
+@NoArgsConstructor
 public class MuseumEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,8 +34,6 @@ public class MuseumEntity {
     @Column(name = "country_id")
     private UUID countryId;
 
-    public MuseumEntity() {
-    }
 
     public MuseumEntity(UUID id, String title, String description, byte[] photo, String city, UUID countryId) {
         this.id = id;

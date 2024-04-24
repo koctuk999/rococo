@@ -23,8 +23,8 @@ public class Header extends BaseComponent<Header> {
     private final SelenideElement museum = this.self.$("a[href*='/museum']");
     private final SelenideElement painting = this.self.$("a[href*='/painting']");
 
-    private final SelenideElement loginButton = this.self.$(byDataTestId("login-button"));
-    private final SelenideElement profileButton = this.self.$(byDataTestId("profile-button"));
+    private final SelenideElement loginButton = $(byDataTestId("login-button"));
+    private final SelenideElement profileButton = $(byDataTestId("profile-button"));
 
     private final SelenideElement avatar = profileButton.$(byDataTestId("avatar"));
 

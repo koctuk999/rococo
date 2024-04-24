@@ -3,20 +3,16 @@ package guru.qa.rococo.api.rest.auth;
 import com.fasterxml.jackson.databind.JsonNode;
 import guru.qa.rococo.api.rest.RestClient;
 import guru.qa.rococo.api.rest.interceptor.CodeInterceptor;
-import guru.qa.rococo.core.extensions.ApiLoginExtension;
-import guru.qa.rococo.core.extensions.ContextHolderExtension.Holder;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static guru.qa.rococo.api.rest.cookie.CookieUtils.*;
-import static guru.qa.rococo.core.extensions.ApiLoginExtension.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class AuthApiClient extends RestClient {
+public class AuthClient extends RestClient {
     private final AuthApi authApi;
 
-    public AuthApiClient() {
+    public AuthClient() {
         super(
                 CFG.authUrl(),
                 true,
