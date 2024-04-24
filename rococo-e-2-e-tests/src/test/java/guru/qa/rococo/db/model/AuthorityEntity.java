@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@Getter
-@Setter
+
 @Entity
+@Data
 @Table(name = "authority")
 public class AuthorityEntity implements Serializable {
   @Id

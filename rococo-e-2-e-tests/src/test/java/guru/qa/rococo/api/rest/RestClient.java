@@ -2,6 +2,7 @@ package guru.qa.rococo.api.rest;
 
 import guru.qa.rococo.api.rest.cookie.ThreadSafeCookieManager;
 import guru.qa.rococo.config.Config;
+import io.qameta.allure.okhttp3.AllureOkHttp3;
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -68,6 +69,15 @@ public abstract class RestClient {
                 followRedirect,
                 JacksonConverterFactory.create(),
                 interceptors
+        );
+    }
+
+    public RestClient(@Nonnull String baseUri) {
+        this(
+                baseUri,
+                false,
+                JacksonConverterFactory.create(),
+                null
         );
     }
 }

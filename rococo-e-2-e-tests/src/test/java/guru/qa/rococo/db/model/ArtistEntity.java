@@ -2,19 +2,15 @@ package guru.qa.rococo.db.model;
 
 import guru.qa.grpc.rococo.grpc.Artist;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@Builder
 @Data
+@Builder
 @Table(name = "artist")
+@NoArgsConstructor
 public class ArtistEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,9 +25,6 @@ public class ArtistEntity {
 
     @Column(columnDefinition = "bytea", nullable = false)
     private byte[] photo;
-
-    public ArtistEntity() {
-    }
 
     public ArtistEntity(UUID id, String name, String biography, byte[] photo) {
         this.id = id;

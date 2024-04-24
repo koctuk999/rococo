@@ -2,22 +2,18 @@ package guru.qa.rococo.db.model;
 
 import guru.qa.grpc.rococo.grpc.Painting;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.AUTO;
 import static java.util.UUID.fromString;
 
-@Getter
-@Setter
 @Entity
 @Data
 @Builder
 @Table(name = "painting")
+@NoArgsConstructor
 public class PaintingEntity {
     @Id
     @GeneratedValue(strategy = AUTO)
@@ -46,9 +42,6 @@ public class PaintingEntity {
         this.content = content;
         this.museumId = museumId;
         this.artistId = artistId;
-    }
-
-    public PaintingEntity() {
     }
 
     public static PaintingEntity toPaintingEntity(Painting painting) {

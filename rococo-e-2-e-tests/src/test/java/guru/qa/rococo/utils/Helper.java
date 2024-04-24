@@ -1,6 +1,11 @@
 package guru.qa.rococo.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.Message;
+import com.google.protobuf.util.JsonFormat;
 import io.qameta.allure.Allure;
+import lombok.SneakyThrows;
 import org.openqa.selenium.TimeoutException;
 
 import java.util.function.Supplier;
@@ -47,6 +52,25 @@ public class Helper {
                 throw new TimeoutException("Did not wait for %s after %d ms".formatted(description, timeout));
             }
         }
+    }
+
+    @SneakyThrows
+    public static JsonNode toJson(Message grpcObject) {
+        ObjectMapper om = new ObjectMapper();
+        return om.readTree(
+                JsonFormat
+                        .printer()
+                        .print(grpcObject)
+        );
+    }
+
+    @SneakyThrows
+    public static <T extends Message> T toGrpc(JsonNode json, Class<T> messageClass) {
+        ObjectMapper om = new ObjectMapper();
+        String jsonString = om.writeValueAsString(json);
+        T.Builder builder = (T.Builder) messageClass.getMethod("newBuilder").invoke(null);
+        JsonFormat.parser().merge(jsonString, builder);
+        return (T) builder.build();
     }
 }
 

@@ -15,6 +15,11 @@ public class DockerConfig implements Config {
     }
 
     @Override
+    public String gatewayUrl() {
+        return "http://gateway.rococo.dc:8080";
+    }
+
+    @Override
     public String dbUrl() {
         return "rococo-db";
     }
