@@ -5,9 +5,8 @@ import guru.qa.rococo.page.BasePage;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static guru.qa.rococo.selenide.condition.PhotoCondition.imageCondition;
+import static guru.qa.rococo.selenide.condition.ImageCondition.imageCondition;
 import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class MuseumPage extends BasePage<MuseumPage> {
@@ -29,6 +28,15 @@ public class MuseumPage extends BasePage<MuseumPage> {
         return this;
     }
 
+    public boolean isEditAvailable(){
+        return editButton.exists();
+    }
+
+    @Step("Edit museum")
+    public MuseumUpsertModal editMuseum(){
+        editButton.click();
+        return new MuseumUpsertModal();
+    }
     @Step("Check title {0}")
     public MuseumPage checkTitle(String title) {
         this.title.should(text(title));

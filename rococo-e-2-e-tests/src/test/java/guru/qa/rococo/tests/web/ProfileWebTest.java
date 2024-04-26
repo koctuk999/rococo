@@ -50,7 +50,7 @@ public class ProfileWebTest extends BaseWebTest {
                 .update();
 
         mainPage
-                .checkToasterMessage(PROFILE_UPDATED)
+                .checkSuccessMessage(PROFILE_UPDATED)
                 .closeToast()
                 .getHeader()
                 .checkAvatar(imagePath);
@@ -64,4 +64,23 @@ public class ProfileWebTest extends BaseWebTest {
                 .checkAvatar(imagePath);
 
     }
+
+    @Test
+    @DisplayName("Check logout")
+    @LoggedIn(user = @CreatedUser)
+    public void checkLogout(){
+        mainPage
+                .getHeader()
+                .checkLoggedIn();
+
+        mainPage
+                .getHeader()
+                .toProfile()
+                .logout();
+
+        mainPage
+                .getHeader()
+                .checkUnauthorized();
+    }
+
 }

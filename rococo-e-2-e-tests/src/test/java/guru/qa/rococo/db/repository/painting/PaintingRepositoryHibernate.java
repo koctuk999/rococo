@@ -7,6 +7,8 @@ import io.qameta.allure.Step;
 import jakarta.persistence.TypedQuery;
 import lombok.SneakyThrows;
 
+import java.util.UUID;
+
 import static guru.qa.rococo.db.Database.PAINTING;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
 import static guru.qa.rococo.utils.Helper.attempt;
@@ -32,5 +34,11 @@ public class PaintingRepositoryHibernate extends JpaService implements PaintingR
                 1000,
                 () -> query.getSingleResult()
         );
+    }
+
+    @Override
+    @Step("Find painting by id {0}")
+    public PaintingEntity findPaintingById(UUID id) {
+        return entityManager(PAINTING).find(PaintingEntity.class, id);
     }
 }

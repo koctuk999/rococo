@@ -7,6 +7,8 @@ import io.qameta.allure.Step;
 import jakarta.persistence.TypedQuery;
 import lombok.SneakyThrows;
 
+import java.util.UUID;
+
 import static guru.qa.rococo.db.Database.ARTIST;
 import static guru.qa.rococo.db.hibernate.EmfProvider.INSTANCE;
 import static guru.qa.rococo.utils.Helper.attempt;
@@ -32,5 +34,11 @@ public class ArtistRepositoryHibernate extends JpaService implements ArtistRepos
                 1000,
                 () -> query.getSingleResult()
         );
+    }
+
+    @Override
+    @Step("Find artist by id {0}")
+    public ArtistEntity findArtistById(UUID id) {
+        return entityManager(ARTIST).find(ArtistEntity.class, id);
     }
 }

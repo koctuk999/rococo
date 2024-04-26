@@ -2,27 +2,20 @@ package guru.qa.rococo.page;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.impl.CollectionElement;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.page.component.Header;
-import guru.qa.rococo.page.component.message.ToastMessage;
+import guru.qa.rococo.page.component.message.Message;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
+
+import javax.annotation.Nullable;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byAttribute;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static guru.qa.rococo.config.Config.getInstance;
-import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 import static guru.qa.rococo.utils.Helper.waitFor;
-import static java.lang.System.currentTimeMillis;
 
 public abstract class BasePage<T extends BasePage> {
     static {
@@ -34,6 +27,7 @@ public abstract class BasePage<T extends BasePage> {
     protected final Header header = new Header();
 
     protected final SelenideElement toaster = $(By.className("toast"));
+    protected final SelenideElement errorLabel = $(By.className("form__error"));
 
     public Header getHeader() {
         return header;
@@ -55,8 +49,19 @@ public abstract class BasePage<T extends BasePage> {
 
     @Step("Check that success message appears: {msg}")
     @SuppressWarnings("unchecked")
-    public T checkToasterMessage(ToastMessage msg) {
-        toaster.should(visible).should(text(msg.getMessage()));
+    public T checkSuccessMessage(Message msg, @Nullable String... formatArgs) {
+        toaster
+                .should(visible)
+                .should(text(msg.getMessage().formatted(formatArgs)));
+        return (T) this;
+    }
+
+    @Step("Check error message appears: {msg}")
+    @SuppressWarnings("unchecked")
+    public T checkErrorMessage(Message msg, @Nullable String... formatArgs) {
+        errorLabel
+                .should(visible)
+                .should(text(msg.getMessage().formatted(formatArgs)));
         return (T) this;
     }
 

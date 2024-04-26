@@ -6,7 +6,7 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.$;
-import static guru.qa.rococo.selenide.condition.PhotoCondition.imageCondition;
+import static guru.qa.rococo.selenide.condition.ImageCondition.imageCondition;
 import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class ProfilePage extends BasePage<ProfilePage> {

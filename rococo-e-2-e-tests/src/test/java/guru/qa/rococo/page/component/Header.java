@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selenide.$;
-import static guru.qa.rococo.selenide.condition.PhotoCondition.imageCondition;
+import static guru.qa.rococo.selenide.condition.ImageCondition.imageCondition;
 import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class Header extends BaseComponent<Header> {
@@ -34,21 +34,21 @@ public class Header extends BaseComponent<Header> {
     }
 
     @Step("To Museum Page")
-    public MuseumsPage toMuseumPage() {
+    public MuseumsPage toMuseumsPage() {
         museum.click();
-        return new MuseumsPage();
+        return new MuseumsPage().waitForPageLoaded();
     }
 
     @Step("To Artist Page")
-    public ArtistsPage toArtistPage() {
+    public ArtistsPage toArtistsPage() {
         artist.click();
         return new ArtistsPage();
     }
 
     @Step("To Painting Page")
-    public PaintingsPage toPaintingPage() {
+    public PaintingsPage toPaintingsPage() {
         painting.click();
-        return new PaintingsPage();
+        return new PaintingsPage().waitForPageLoaded();
     }
 
     @Step("Click login button")
@@ -59,6 +59,11 @@ public class Header extends BaseComponent<Header> {
     @Step("Check that user is logged in")
     public void checkLoggedIn() {
         avatar.shouldBe(visible);
+    }
+
+    @Step("Check that user is unauthorized")
+    public void checkUnauthorized() {
+        loginButton.shouldBe(visible);
     }
 
     @Step("To profile")
