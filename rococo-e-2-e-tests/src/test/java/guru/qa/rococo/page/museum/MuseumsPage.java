@@ -1,5 +1,6 @@
 package guru.qa.rococo.page.museum;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.rococo.page.BasePage;
@@ -8,11 +9,9 @@ import guru.qa.rococo.page.component.Header;
 import guru.qa.rococo.page.component.SearchPlaceholder;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class MuseumsPage extends BasePage<MuseumsPage> {
@@ -30,6 +29,10 @@ public class MuseumsPage extends BasePage<MuseumsPage> {
         return this;
     }
 
+    public boolean isAddMuseumAvailable() {
+        return addMuseumButton.exists();
+    }
+
     @Step("To museum")
     public MuseumPage clickMuseum(String museumTitle) {
         scrollToElement($(byDataTestId("museum-items")).$(byText(museumTitle)), museums);
@@ -44,5 +47,25 @@ public class MuseumsPage extends BasePage<MuseumsPage> {
     public MuseumUpsertModal addMuseum() {
         addMuseumButton.click();
         return new MuseumUpsertModal();
+    }
+
+    @Step("Search museum {0}")
+    public MuseumsPage searchMuseum(String title) {
+        searchPlaceholder.searchItem(title);
+        return this;
+    }
+
+    @Step("Check museums size [expected {0}]")
+    public MuseumsPage checkMuseumsSize(Integer expectedSize) {
+        museums.should(CollectionCondition.size(expectedSize));
+        return this;
+    }
+
+    @Step("Check museum {0} in list")
+    public MuseumsPage checkMuseumInList(String museumTitle) {
+        museums
+                .findBy(text(museumTitle))
+                .should(exist);
+        return this;
     }
 }

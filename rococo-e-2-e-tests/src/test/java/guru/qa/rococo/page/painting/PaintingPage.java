@@ -6,7 +6,7 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
-import static guru.qa.rococo.selenide.condition.PhotoCondition.imageCondition;
+import static guru.qa.rococo.selenide.condition.ImageCondition.imageCondition;
 import static guru.qa.rococo.selenide.selector.CustomSelectors.byDataTestId;
 
 public class PaintingPage extends BasePage<PaintingPage> {
@@ -25,6 +25,10 @@ public class PaintingPage extends BasePage<PaintingPage> {
         content.shouldBe(visible);
         content.shouldBe(not(text("undefined")));
         return this;
+    }
+
+    public boolean isEditAvailable() {
+        return editButton.exists();
     }
 
     @Step("Check title {0}")
@@ -51,6 +55,12 @@ public class PaintingPage extends BasePage<PaintingPage> {
                 .content
                 .should(imageCondition(content, byPath));
         return this;
+    }
+
+    @Step("Edit painting")
+    public PaintingUpsertModal editPainting() {
+        this.editButton.click();
+        return new PaintingUpsertModal();
     }
 
 }

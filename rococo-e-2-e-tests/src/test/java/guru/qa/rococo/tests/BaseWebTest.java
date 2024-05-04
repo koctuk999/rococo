@@ -1,7 +1,6 @@
 package guru.qa.rococo.tests;
 
 import guru.qa.rococo.core.annotations.WebTest;
-import guru.qa.rococo.page.LoginPage;
 import guru.qa.rococo.page.MainPage;
 
 @WebTest

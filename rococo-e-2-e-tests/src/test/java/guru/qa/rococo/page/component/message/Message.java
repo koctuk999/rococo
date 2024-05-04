@@ -1,5 +1,5 @@
 package guru.qa.rococo.page.component.message;
 
-public interface ToastMessage {
+public interface Message {
     String getMessage();
 }

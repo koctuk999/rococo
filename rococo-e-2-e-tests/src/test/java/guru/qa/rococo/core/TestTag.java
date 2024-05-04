@@ -1,7 +1,9 @@
 package guru.qa.rococo.core;
 
 public class TestTag {
-
+    public static final String WEB = "web";
+    public static final String GRPC_API = "grpc_api";
+    public static final String REST_API = "rest_api";
     public static final String CLIENT_ACCEPTANCE = "client_acceptance";
     public static final String GATEWAY_ACCEPTANCE = "gateway_acceptance";
     public static final String AUTH_ACCEPTANCE = "auth_acceptance";

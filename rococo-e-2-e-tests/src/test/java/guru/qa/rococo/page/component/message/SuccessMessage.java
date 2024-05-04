@@ -3,11 +3,14 @@ package guru.qa.rococo.page.component.message;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum SuccessMessage implements ToastMessage {
+public enum SuccessMessage implements Message {
     PROFILE_UPDATED("Профиль обновлен"),
-    MUSEUM_ADDED("Добавлен музей"),
-    ARTIST_ADDED("Добавлен художник"),
-    PAINTING_ADDED("Добавлена картины");
+    MUSEUM_ADDED("Добавлен музей: %s"),
+    MUSEUM_UPDATED("Обновлен музей: %s"),
+    ARTIST_ADDED("Добавлен художник: %s"),
+    ARTIST_UPDATED("Обновлен художник: %s"),
+    PAINTING_ADDED("Добавлена картина: %s"),
+    PAINTING_UPDATED("Обновлена картина: %s");
 
     private final String message;
 

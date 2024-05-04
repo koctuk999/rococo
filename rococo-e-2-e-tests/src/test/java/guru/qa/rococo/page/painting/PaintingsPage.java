@@ -1,15 +1,16 @@
 package guru.qa.rococo.page.painting;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.rococo.page.BasePage;
 import guru.qa.rococo.page.component.Header;
 import guru.qa.rococo.page.component.SearchPlaceholder;
 import guru.qa.rococo.page.museum.MuseumUpsertModal;
+import guru.qa.rococo.page.museum.MuseumsPage;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -26,6 +27,32 @@ public class PaintingsPage extends BasePage<PaintingsPage> {
     @Override
     public PaintingsPage waitForPageLoaded() {
         searchPlaceholder.getSelf().should(visible);
+        return this;
+    }
+
+    public boolean isAddPaintingAvailable(){
+        return addPaintingButton.exists();
+    }
+
+
+    @Step("Search painting {0}")
+    public PaintingsPage searchPainting(String title) {
+        searchPlaceholder.searchItem(title);
+        return this;
+    }
+
+
+    @Step("Check paintings size [expected {0}]")
+    public PaintingsPage checkPaintingSize(Integer expectedSize) {
+        paintings.should(CollectionCondition.size(expectedSize));
+        return this;
+    }
+
+    @Step("Check painting {0} in list")
+    public PaintingsPage checkPaintingInList(String paintingTitle) {
+        paintings
+                .findBy(text(paintingTitle))
+                .should(exist);
         return this;
     }
 

@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import static guru.qa.rococo.utils.ImageHelper.getPhotoByPath;
 
 
-public class PhotoCondition {
+public class ImageCondition {
 
     public static Condition imageCondition(String expectedPhoto, boolean byPath) {
         return new Condition("image") {
@@ -21,7 +21,7 @@ public class PhotoCondition {
                             .getAttribute("src")
                             .equals(image);
 
-                return new CheckResult(matched, matched ? "avatars are same" : "avatars are different");
+                return new CheckResult(matched, matched ? "images are same" : "images are different");
             }
 
             @Nonnull
