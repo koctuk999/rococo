@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import static guru.qa.rococo.utils.Hellpers.convertGrpcToJson;
 import static guru.qa.rococo.utils.Hellpers.convertJsonToGrpc;
 
-//TODO унести в сервис?
 @RestController
 @RequestMapping(value = "/api/user")
 public class UserController {
