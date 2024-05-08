@@ -36,7 +36,7 @@ public abstract class BasePage<T extends BasePage> {
     @Step("Scroll to element {0} in collection {1}")
     public <T> T scrollToElement(SelenideElement element, ElementsCollection collection) {
         waitFor(
-                "scroll to element %s".formatted(element),
+                "element %s to appear".formatted(element),
                 15000,
                 () -> {
                     collection.last().scrollIntoView(true);
