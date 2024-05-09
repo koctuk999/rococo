@@ -52,11 +52,6 @@ public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecution
 
             if (annotation.get().setCookies()){
                 Selenide.open(CFG.frontUrl());
-                SessionStorage sessionStorage = Selenide.sessionStorage();
-                sessionStorage.setItem("codeChallenge", getCodChallenge());
-                sessionStorage.setItem("id_token", getToken());
-                sessionStorage.setItem("codeVerifier", getCodeVerifier());
-
                 LocalStorage localStorage = Selenide.localStorage();
                 localStorage.setItem("codeChallenge", getCodChallenge());
                 localStorage.setItem("id_token", getToken());

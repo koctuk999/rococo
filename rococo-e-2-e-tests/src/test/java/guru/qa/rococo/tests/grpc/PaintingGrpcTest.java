@@ -1,8 +1,6 @@
 package guru.qa.rococo.tests.grpc;
 
-import guru.qa.grpc.rococo.grpc.Artist;
-import guru.qa.grpc.rococo.grpc.Museum;
-import guru.qa.grpc.rococo.grpc.Painting;
+import guru.qa.grpc.rococo.grpc.*;
 import guru.qa.rococo.core.annotations.GeneratedArtist;
 import guru.qa.rococo.core.annotations.GeneratedMuseum;
 import guru.qa.rococo.core.annotations.GeneratedPainting;
@@ -16,12 +14,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static guru.qa.rococo.core.TestTag.PAINTING_ACCEPTANCE;
+import static guru.qa.rococo.core.TestTag.*;
 import static guru.qa.rococo.db.model.PaintingEntity.toPaintingEntity;
 import static guru.qa.rococo.utils.CustomAssert.check;
+import static guru.qa.rococo.utils.Helper.waitFor;
 import static guru.qa.rococo.utils.ImageHelper.*;
-import static guru.qa.rococo.utils.RandomUtils.genRandomDescription;
-import static guru.qa.rococo.utils.RandomUtils.genRandomTitle;
+import static guru.qa.rococo.utils.RandomUtils.*;
 import static io.qameta.allure.Allure.step;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -135,5 +133,103 @@ public class PaintingGrpcTest extends BaseGrpcTest {
                             paintingById.getDescription(), equalTo(newDescription))
             );
         });
+    }
+
+    @Test
+    @DisplayName("Check painting after artist update")
+    @Tag(ARTIST_ACCEPTANCE)
+    @GeneratedPainting(
+            museum = @GeneratedMuseum,
+            artist = @GeneratedArtist
+    )
+    public void checkPaintingAfterArtistUpdate(Painting painting, Artist artist) {
+        String newPhoto = getPhotoByPath(ARTIST_NEW_PHOTO_PATH);
+        String newName = genRandomName();
+        String newBiography = genRandomDescription(100);
+
+        check("painting has expected artist",
+                painting.getArtist(), equalTo(artist));
+
+        Artist updatedArtist = step("Update artist %s".formatted(artist.getId()),
+                () -> grpcArtistClient.updateArtist(
+                        Artist
+                                .newBuilder()
+                                .setId(artist.getId())
+                                .setName(newName)
+                                .setPhoto(newPhoto)
+                                .setBiography(newBiography)
+                                .build()
+                )
+        );
+
+        waitFor(
+                "update artist in painting",
+                30000,
+                () -> {
+                    Painting paintingById = grpcPaintingClient.getPaintingById(painting.getId());
+                    return paintingById
+                            .getArtist()
+                            .getName()
+                            .equals(newName);
+                }
+        );
+
+        Painting updatedPainting = grpcPaintingClient.getPaintingById(painting.getId());
+        check("painting has expected updated artist",
+                updatedPainting.getArtist(), equalTo(updatedArtist));
+    }
+
+    @Test
+    @Tag(MUSEUM_ACCEPTANCE)
+    @DisplayName("Check painting after museum update")
+    @GeneratedPainting(
+            museum = @GeneratedMuseum,
+            artist = @GeneratedArtist
+    )
+    public void checkPaintingAfterMuseumUpdate(Painting painting, Museum museum) {
+        String newTitle = genRandomTitle();
+        String newPhoto = getPhotoByPath(MUSEUM_NEW_PHOTO_PATH);
+        Country newCountry = grpcCountryClient.getCountries(2, null).getCountry(0);
+        String newCity = genRandomCity();
+        String newDescription = genRandomDescription(100);
+
+        check("painting has expected museum",
+                painting.getMuseum(), equalTo(museum));
+
+        Museum updatedMuseum = step(
+                "Update museum %s".formatted(museum.getId()),
+                () -> grpcMuseumClient.updateMuseum(
+                        Museum
+                                .newBuilder()
+                                .setId(museum.getId())
+                                .setTitle(newTitle)
+                                .setPhoto(newPhoto)
+                                .setDescription(newDescription)
+                                .setGeo(Geo
+                                        .newBuilder()
+                                        .setCity(newCity)
+                                        .setCountry(newCountry)
+                                        .build()
+                                )
+                                .build()
+
+                )
+        );
+
+        waitFor(
+                "update museum in painting",
+                30000,
+                () -> {
+                    Painting paintingById = grpcPaintingClient.getPaintingById(painting.getId());
+                    return paintingById
+                            .getMuseum()
+                            .getTitle()
+                            .equals(newTitle);
+                }
+        );
+
+        Painting updatedPainting = grpcPaintingClient.getPaintingById(painting.getId());
+        check("painting has expected updated museum",
+                updatedPainting.getMuseum(), equalTo(updatedMuseum));
     }
 }
